@@ -1,947 +1,829 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XARIZMA — Аренда караоке-зала в центре Москвы</title>
+    <title>Дом Лучшей Еды — Премиальный Ресторан</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playfair Display for headers & Montserrat for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brandBg: '#121316',
-                        brandCard: '#1e2026',
-                        brandCardHover: '#262932',
-                        brandOrange: '#ff6b00',
-                        brandYellow: '#ffa800',
-                        brandBorder: 'rgba(255, 255, 255, 0.08)',
+                        brand: {
+                            orange: '#e8741e',
+                            darkOrange: '#d06010',
+                            wood: '#110b07',
+                            cardBg: '#ffffff',
+                            accent: '#bc6c25'
+                        }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+
     <style>
         body {
-            background-color: #121316;
-            color: #f3f4f6;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #ff6b00 0%, #ffa800 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            scroll-behavior: smooth;
         }
 
-        .gradient-btn {
-            background: linear-gradient(135deg, #ff6b00 0%, #ffa800 100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.35);
+        .bg-wood-texture {
+            background-color: #120c08;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(232, 116, 30, 0.15), transparent 70%),
+                linear-gradient(to bottom, rgba(18, 12, 8, 0.85), rgba(18, 12, 8, 0.98)),
+                url('https://images.unsplash.com/photo-1546484475-7f7bd55792da?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
-        .gradient-btn:hover {
-            box-shadow: 0 6px 28px rgba(255, 107, 0, 0.55);
-            transform: translateY(-2px);
+        .bg-brick-texture {
+            background-color: #1a0f0a;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        .gradient-btn:active {
-            transform: translateY(0);
+        .bg-promo-banner {
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.4)),
+                url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
-        .hero-bg {
-            background: linear-gradient(180deg, rgba(18, 19, 22, 0.75) 0%, rgba(18, 19, 22, 0.95) 100%), 
-                        url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+        .bg-footer-interior {
+            background-image: 
+                linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+                url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #121316;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a2d36;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ff6b00;
+        /* Custom price tag overlay circle */
+        .price-badge {
+            box-shadow: 0 4px 15px rgba(232, 116, 30, 0.4);
         }
 
-        .pulse-badge {
-            box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.6);
-            animation: pulse 2s infinite;
+        /* Dotted leader for menu items */
+        .dotted-line {
+            border-bottom: 2px dotted #cccccc;
+            flex-grow: 1;
+            margin: 0 12px;
+            height: 1em;
         }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.7);
-            }
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 12px rgba(255, 107, 0, 0);
-            }
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(255, 107, 0, 0);
-            }
+        /* Floating image subtle animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        /* Modal display animation */
+        .modal-active {
+            display: flex !important;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brandOrange selection:text-white">
+<body class="bg-gray-50 text-gray-800">
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-40 bg-[#121316]/90 backdrop-blur-md border-b border-brandBorder transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-2 group">
-                <span class="text-3xl font-black tracking-widest text-white group-hover:text-brandOrange transition-colors">
-                    XARI<span class="text-brandOrange">Z</span>MA
-                </span>
-            </a>
-
-            <!-- Info Nav (Desktop) -->
-            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
-                <a href="tel:+79979709090" class="flex items-center gap-2.5 text-gray-300 hover:text-white transition-colors">
-                    <div class="w-8 h-8 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
-                        <i class="fa-solid fa-phone text-xs"></i>
+    <!-- Header / Navbar Section -->
+    <header class="bg-wood-texture pt-6 pb-28 text-white relative z-20 border-b border-amber-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute w-7 h-7 border-2 border-brand-orange rotate-45 transition-transform group-hover:rotate-90 duration-500"></div>
+                        <div class="absolute w-7 h-7 border-2 border-amber-400 rotate-12 transition-transform group-hover:-rotate-45 duration-500"></div>
                     </div>
-                    <span>+7 (997) 970-90-90</span>
                 </a>
-                <div class="flex items-center gap-2.5 text-gray-300">
-                    <div class="w-8 h-8 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
-                        <i class="fa-solid fa-location-dot text-xs"></i>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold tracking-widest uppercase">
+                    <a href="#hero" class="text-brand-orange transition-colors">ГЛАВНАЯ</a>
+                    <a href="#our-menu" class="hover:text-brand-orange transition-colors">МЕНЮ</a>
+                    <a href="#about" class="hover:text-brand-orange transition-colors">О НАС</a>
+                    <a href="#reservation" class="hover:text-brand-orange transition-colors">БРОНЬ</a>
+                    <button onclick="openCartModal()" class="relative hover:text-brand-orange transition-colors text-sm">
+                        <i class="fa-solid font-bold fa-cart-shopping"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-3 bg-brand-orange text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                </nav>
+
+                <!-- Phone and Booking Button -->
+                <div class="hidden lg:flex items-center space-x-6">
+                    <div class="flex items-center space-x-3 text-right">
+                        <div class="p-2 border border-amber-500/30 rounded-full text-brand-orange">
+                            <i class="fa-solid fa-phone text-sm"></i>
+                        </div>
+                        <div>
+                            <a href="tel:+9998887654" class="font-bold text-sm hover:text-brand-orange transition-colors tracking-wider">+999-888-76-54</a>
+                            <p class="text-[10px] text-gray-400">Свяжитесь с нами для бронирования</p>
+                        </div>
                     </div>
-                    <span>м. Лубянка</span>
+                    <button onclick="openBookingModal()" class="bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                        ЗАКАЗ СТОЛИКА
+                    </button>
                 </div>
-                <a href="#rooms" class="text-gray-300 hover:text-brandOrange transition-colors uppercase tracking-wider text-xs font-semibold">Наши залы</a>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center space-x-4">
+                    <button onclick="openCartModal()" class="relative text-white text-lg">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white text-2xl focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
             </div>
 
-            <!-- Header Action Button -->
-            <div class="flex items-center gap-3">
-                <button onclick="openBookingModal('Общая бронь')" class="gradient-btn text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-3 rounded-xl flex items-center gap-2">
-                    <i class="fa-regular fa-calendar-check text-base"></i>
-                    <span>Забронировать</span>
-                </button>
-                
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-400 hover:text-white rounded-lg focus:outline-none">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-zinc-900 border-t border-amber-900/40 mt-4 rounded-lg p-5 space-y-4 text-center">
+                <a href="#hero" class="block text-brand-orange font-medium py-1">ГЛАВНАЯ</a>
+                <a href="#our-menu" class="block text-gray-200 hover:text-brand-orange font-medium py-1">МЕНЮ</a>
+                <a href="#about" class="block text-gray-200 hover:text-brand-orange font-medium py-1">О НАС</a>
+                <a href="#reservation" class="block text-gray-200 hover:text-brand-orange font-medium py-1">БРОНЬ</a>
+                <div class="pt-2 border-t border-zinc-800">
+                    <p class="font-bold text-sm text-brand-orange">+999-888-76-54</p>
+                    <button onclick="openBookingModal()" class="w-full mt-3 bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold py-3 rounded uppercase">
+                        ЗАКАЗ СТОЛИКА
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobileMenu" class="hidden md:hidden bg-brandCard border-b border-brandBorder px-4 pt-3 pb-6 space-y-4">
-            <a href="tel:+79979709090" class="flex items-center gap-3 text-gray-200 py-2">
-                <i class="fa-solid fa-phone text-brandOrange"></i>
-                <span>+7 (997) 970-90-90</span>
-            </a>
-            <div class="flex items-center gap-3 text-gray-200 py-2">
-                <i class="fa-solid fa-location-dot text-brandOrange"></i>
-                <span>м. Лубянка, ул. Сретенский переулок, 4</span>
-            </div>
-            <div class="pt-2 border-t border-brandBorder flex flex-col gap-3">
-                <a href="#rooms" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Наши залы</a>
-                <a href="#advantages" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Преимущества</a>
-                <a href="#how-to-book" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Как забронировать</a>
-                <a href="#faq" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Частые вопросы</a>
+        <!-- Hero Banner Content -->
+        <div id="hero" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 relative">
+            
+            <!-- Decorative Floating Foods Imagery (Desktop) -->
+            <img src="https://images.unsplash.com/photo-1539136788836-5699e78bfc75?auto=format&fit=crop&w=200&q=80" alt="Sushi" class="hidden xl:block absolute top-0 right-10 w-44 h-44 object-contain animate-float drop-shadow-2xl z-10 pointer-events-none">
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80" alt="Salad dish" class="hidden lg:block absolute top-12 right-28 w-80 h-72 object-cover rounded-full shadow-2xl z-10 border-4 border-amber-900/40">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=200&q=80" alt="Coffee beans" class="hidden lg:block absolute bottom-10 right-1/3 w-32 h-24 object-contain opacity-80 pointer-events-none">
+            <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=150&q=80" alt="Spices" class="hidden lg:block absolute top-12 left-4 w-28 h-28 object-contain pointer-events-none">
+
+            <div class="max-w-xl text-center md:text-left py-8 relative z-10">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif text-amber-500 font-medium leading-tight">
+                    Добро пожаловать в
+                </h1>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-serif text-brand-orange font-bold mt-1 mb-3">
+                    Наш ресторан
+                </h2>
+                <div class="flex items-center justify-center md:justify-start space-x-3 my-4">
+                    <span class="w-8 h-[1px] bg-amber-500/60"></span>
+                    <span class="text-xs uppercase tracking-widest text-amber-200/80 font-light">дом лучшей еды</span>
+                    <span class="w-8 h-[1px] bg-amber-500/60"></span>
+                </div>
+
+                <div class="mt-8">
+                    <a href="#our-menu" class="inline-block bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                        VIEW MENU
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="relative hero-bg py-16 lg:py-24 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
-                <div class="lg:col-span-7 space-y-8">
-                    <div class="inline-flex items-center gap-2 bg-brandCard/80 backdrop-blur border border-brandBorder px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-gray-300">
-                        <span class="w-2 h-2 rounded-full bg-brandOrange animate-ping"></span>
-                        <span>Караоке-клуб в центре Москвы</span>
-                    </div>
-
-                    <h2 class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-brandOrange">
-                        Арендуй караоке-зал до 10 человек
-                    </h2>
-
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-tight tracking-tight text-white">
-                        Возьми <span class="gradient-text">напитки</span> <br class="hidden sm:inline"/>и еду с собой
-                    </h1>
-
-                    <!-- Feature Checks -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                        <div class="flex items-start gap-3 bg-brandCard/60 backdrop-blur p-3 rounded-xl border border-brandBorder">
-                            <i class="fa-solid fa-circle-check text-brandOrange text-lg mt-0.5"></i>
-                            <span class="text-xs font-medium text-gray-200">Если хочешь попеть и оторваться</span>
-                        </div>
-                        <div class="flex items-start gap-3 bg-brandCard/60 backdrop-blur p-3 rounded-xl border border-brandBorder">
-                            <i class="fa-solid fa-circle-check text-brandOrange text-lg mt-0.5"></i>
-                            <span class="text-xs font-medium text-gray-200">Отдохнуть после работы</span>
-                        </div>
-                        <div class="flex items-start gap-3 bg-brandCard/60 backdrop-blur p-3 rounded-xl border border-brandBorder">
-                            <i class="fa-solid fa-circle-check text-brandOrange text-lg mt-0.5"></i>
-                            <span class="text-xs font-medium text-gray-200">Хорошо провести время</span>
-                        </div>
-                    </div>
-
-                    <!-- Call to Action Button & Telegram Widget Link -->
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
-                        <button onclick="openBookingModal('Главная страница')" class="gradient-btn text-white text-base font-bold uppercase tracking-wider px-8 py-4 rounded-xl text-center">
-                            Забронировать онлайн
-                        </button>
-                        <a href="https://t.me/fh_harizma_bot" target="_blank" class="bg-brandCard hover:bg-brandCardHover border border-brandBorder text-gray-200 font-semibold px-6 py-4 rounded-xl flex items-center justify-center gap-3 transition-colors">
-                            <i class="fa-brands fa-telegram text-sky-400 text-xl"></i>
-                            <span>Связаться в Telegram</span>
-                        </a>
-                    </div>
+    <!-- Top Feature Cards Overlapping Banner -->
+    <section class="relative z-30 max-w-6xl mx-auto px-4 -mt-20 sm:-mt-24">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Card 1 -->
+            <div class="bg-white rounded-lg p-8 shadow-xl text-center border-t-4 border-amber-500 transform hover:-translate-y-1 transition-all duration-300">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-brand-orange text-3xl">
+                    <i class="fa-solid fa-utensils"></i>
                 </div>
-
-                <!-- Hero Graphic Badge / 24 Hours Info -->
-                <div class="lg:col-span-5 flex justify-center lg:justify-end">
-                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full border border-brandBorder bg-gradient-to-br from-brandCard to-[#16181e] flex flex-col items-center justify-center p-6 text-center pulse-badge shadow-2xl">
-                        <div class="w-16 h-16 rounded-full bg-brandOrange/20 border border-brandOrange flex items-center justify-center mb-4">
-                            <i class="fa-regular fa-clock text-brandOrange text-2xl"></i>
-                        </div>
-                        <span class="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1">Можно шуметь</span>
-                        <span class="text-2xl sm:text-3xl font-black text-white gradient-text uppercase">Круглосуточно</span>
-                        <span class="text-xs text-gray-400 mt-2 font-medium">24/7 без ограничений по шуму</span>
-                    </div>
-                </div>
+                <h3 class="text-lg font-serif font-bold text-gray-800 mb-2">
+                    Магическая <span class="text-amber-600">Атмосфера</span>
+                </h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    В нашем заведении царит магическая атмосфера наполненная вкусными ароматами
+                </p>
             </div>
-        </div>
 
-        <!-- BOTTOM FEATURE STRIP -->
-        <div class="mt-16 border-t border-b border-brandBorder bg-brandCard/50 backdrop-blur py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
-                    <div class="flex flex-col md:flex-row items-center gap-3">
-                        <i class="fa-solid fa-microphone-lines text-2xl text-brandOrange"></i>
-                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Профессиональное караоке AST-50</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row items-center gap-3">
-                        <i class="fa-solid fa-wine-glass text-2xl text-brandOrange"></i>
-                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Без пробкового сбора</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row items-center gap-3">
-                        <i class="fa-solid fa-wallet text-2xl text-brandOrange"></i>
-                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Без депозита</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row items-center gap-3">
-                        <i class="fa-solid fa-gift text-2xl text-brandOrange"></i>
-                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Скидка в День Рождения</span>
-                    </div>
+            <!-- Card 2 -->
+            <div class="bg-white rounded-lg p-8 shadow-xl text-center border-t-4 border-amber-500 transform hover:-translate-y-1 transition-all duration-300">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-brand-orange text-3xl">
+                    <i class="fa-solid fa-bell-concierge"></i>
                 </div>
+                <h3 class="text-lg font-serif font-bold text-gray-800 mb-2">
+                    Лучшее качество <span class="text-amber-600">Еды</span>
+                </h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Качество нашей Еды - отменное! Готовим исключительно из свежих отборных продуктов.
+                </p>
             </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-lg p-8 shadow-xl text-center border-t-4 border-amber-500 transform hover:-translate-y-1 transition-all duration-300">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-brand-orange text-3xl">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <h3 class="text-lg font-serif font-bold text-gray-800 mb-2">
+                    Недорогая <span class="text-amber-600">Еда</span>
+                </h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Стоимость нашей Еды зависит только от ее количества. Качество всегда на высоте!
+                </p>
+            </div>
+
         </div>
     </section>
 
-    <!-- SECTION: OUR ROOMS -->
-    <section id="rooms" class="py-20 bg-brandBg relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-                <div>
-                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Наши залы</h2>
-                    <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2">Ознакомьтесь с атмосферой праздника</p>
-                </div>
-                <!-- Room Tabs -->
-                <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="roomTabs">
-                    <button onclick="switchRoom(1)" class="room-tab border border-brandOrange bg-brandOrange text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="1">HALL №1</button>
-                    <button onclick="switchRoom(2)" class="room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="2">HALL №2</button>
-                    <button onclick="switchRoom(3)" class="room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="3">HALL №3</button>
-                    <button onclick="switchRoom(5)" class="room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="5">HALL №5</button>
-                </div>
-            </div>
-
-            <!-- Room Showcase Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- About / Our History Section -->
+    <section id="about" class="py-20 md:py-28 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 
-                <!-- Left Details Box -->
-                <div class="lg:col-span-4 bg-brandCard border border-brandBorder rounded-2xl p-6 sm:p-8 space-y-6">
-                    <div>
-                        <h3 id="roomTitle" class="text-2xl font-black text-white uppercase">HALL №1</h3>
-                        <p class="text-xs text-gray-400 mt-1">Идеально подходит для вечеринок и праздников</p>
-                    </div>
-
-                    <div class="space-y-3">
-                        <div class="flex items-center gap-3 bg-brandBg/60 p-3 rounded-xl border border-brandBorder">
-                            <i class="fa-solid fa-[#000] fa-expand text-brandOrange"></i>
-                            <div>
-                                <span class="text-xs text-gray-400 block">Площадь</span>
-                                <span id="roomArea" class="text-sm font-bold text-white">40 м²</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 bg-brandBg/60 p-3 rounded-xl border border-brandBorder">
-                            <i class="fa-solid fa-users text-brandOrange"></i>
-                            <div>
-                                <span class="text-xs text-gray-400 block">Вместимость</span>
-                                <span id="roomCapacity" class="text-sm font-bold text-white">до 20-ти человек</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p id="roomDesc" class="text-xs text-gray-300 leading-relaxed">
-                        Уютный и просторный зал с лаундж-зоной, современным клубным светом, проектором высокой чёткости и профессиональной акустикой AST-50.
+                <!-- Left Column: Story Text & Stats -->
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-serif text-gray-900 font-bold mb-6">
+                        Наша <span class="text-brand-orange">История</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-gray-500 leading-relaxed mb-10 text-justify">
+                        Как и у любого другого самобытного места, у нас есть своя, особая история. Идея ресторана пришла основателям неожиданно. Во время прогулки по лесу создатель нашего ресторана застрял в сотнях километров от ближайшего населенного пункта. Вдали от цивилизации и связи им пришлось на время обустроить себе нехитрый быт, добывать и готовить себе еду.
                     </p>
 
-                    <button id="roomBookBtn" onclick="openBookingModal('Зал №1')" class="w-full gradient-btn text-white text-sm font-bold uppercase tracking-wider py-4 rounded-xl text-center">
-                        Забронировать
-                    </button>
-                </div>
-
-                <!-- Right Gallery Viewport -->
-                <div class="lg:col-span-8 space-y-4">
-                    <!-- Main Big Image Display -->
-                    <div class="relative rounded-2xl overflow-hidden border border-brandBorder h-72 sm:h-96 group">
-                        <img id="mainRoomImg" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop" alt="Караоке зал" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                            <span class="text-xs font-semibold text-white/80 bg-black/50 backdrop-blur px-3 py-1 rounded-full border border-white/10">
-                                <i class="fa-solid fa-camera mr-1 text-brandOrange"></i> Фотография зала
-                            </span>
+                    <!-- Stats Counter Grid -->
+                    <div class="grid grid-cols-3 gap-4 text-center border-t border-gray-100 pt-8">
+                        <div>
+                            <span class="block text-3xl sm:text-4xl font-serif font-bold text-amber-600">93</span>
+                            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider mt-1 block">Напитки</span>
+                        </div>
+                        <div>
+                            <span class="block text-3xl sm:text-4xl font-serif font-bold text-amber-600">206</span>
+                            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider mt-1 block">Еда</span>
+                        </div>
+                        <div>
+                            <span class="block text-3xl sm:text-4xl font-serif font-bold text-amber-600">71</span>
+                            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider mt-1 block">Закуски</span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Thumbnails Row -->
-                    <div class="grid grid-cols-4 gap-3" id="galleryThumbnails">
-                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-brandOrange opacity-100 transition-all h-20">
-                            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
-                        </button>
-                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20">
-                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
-                        </button>
-                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20">
-                            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
-                        </button>
-                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20">
-                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
-                        </button>
-                    </div>
+                <!-- Right Column: Stacked Image Collage -->
+                <div class="relative flex justify-center lg:justify-end items-center h-80 sm:h-96">
+                    <!-- Background accent square -->
+                    <div class="absolute right-4 top-4 w-60 h-72 bg-amber-100 rounded-lg -z-0"></div>
+                    
+                    <!-- Image 1: Main Dishes (Left stacked) -->
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80" 
+                         alt="Indian Food Dishes" 
+                         class="absolute left-0 sm:left-4 top-0 w-48 sm:w-56 h-64 sm:h-72 object-cover rounded shadow-2xl z-10 border-2 border-white">
+
+                    <!-- Image 2: Interior / Drinks (Center stacked) -->
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80" 
+                         alt="Restaurant interior" 
+                         class="absolute right-12 sm:right-20 top-6 w-44 sm:w-52 h-64 sm:h-80 object-cover rounded shadow-xl z-20 border-2 border-white">
+
+                    <!-- Image 3: Cozy Dining Table (Foreground stacked) -->
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=400&q=80" 
+                         alt="Restaurant dining table" 
+                         class="absolute right-0 bottom-0 w-48 sm:w-56 h-48 sm:h-56 object-cover rounded shadow-2xl z-30 border-4 border-white">
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- SECTION: ADVANTAGES -->
-    <section id="advantages" class="py-20 bg-[#16181e] relative border-t border-brandBorder">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Наши преимущества</h2>
-                <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2">Почему гости выбирают нас</p>
+    <!-- Promotional Offer Banner -->
+    <section class="bg-promo-banner py-20 text-white relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-2xl text-center md:text-left">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-serif text-amber-500 font-bold leading-snug">
+                    Отпразднуйте в одном из самых лучших ресторанов.
+                </h2>
+                <p class="text-sm sm:text-base font-semibold text-gray-200 mt-3">
+                    Только в этом месяце бизнес-ланч от 250 ₽
+                </p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Advantage 1 -->
-                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
-                            <i class="fa-solid fa-shirt"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Никакого дресс-контроля</h3>
-                        <p class="text-xs text-gray-400">Приходите в удобной для вас одежде, чувствуйте себя свободно и как дома.</p>
-                    </div>
-                </div>
-
-                <!-- Advantage 2 -->
-                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
-                            <i class="fa-solid fa-compact-disc"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">~ 40.000+ песен в сет-листе</h3>
-                        <p class="text-xs text-gray-400 mb-2">Более 50,000 студийных фонограмм в качестве PRO.</p>
-                        <span class="text-[11px] text-brandOrange font-semibold">• Ежемесячное обновление репертуара</span>
-                    </div>
-                </div>
-
-                <!-- Advantage 3 -->
-                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
-                            <i class="fa-solid fa-people-group"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Индивидуальные залы</h3>
-                        <p class="text-xs text-gray-400">В зале находится только Ваша компания — никакой очереди на микрофон с посторонними!</p>
-                    </div>
-                </div>
-
-                <!-- Advantage 4 -->
-                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Без депозита</h3>
-                        <p class="text-xs text-gray-400">Мы не берем никакой обязательный депозит. Оплата происходит просто за человека в час.</p>
-                    </div>
-                </div>
-
-                <!-- Advantage 5 -->
-                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
-                            <i class="fa-solid fa-bullseye"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">В самом центре Москвы</h3>
-                        <p class="text-xs text-gray-400">Удобное расположение возле метро Лубянка. Легко добраться из любой точки города.</p>
-                    </div>
-                </div>
-
-                <!-- Advantage 6 (Adjusted per requirement: Drinks only) -->
-                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
-                            <i class="fa-solid fa-glass-water"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">Нет пробкового сбора</h3>
-                        <p class="text-xs text-gray-400">Можно приносить с собой <strong class="text-brandOrange">еду и напитки без пробкового сбора</strong>.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Central CTA Button -->
-            <div class="text-center mt-12">
-                <button onclick="openBookingModal('Преимущества')" class="gradient-btn text-white text-sm font-bold uppercase tracking-wider px-8 py-4 rounded-xl">
-                    Забронировать зал
+            <div>
+                <button onclick="openBookingModal()" class="bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded shadow-xl transition-all duration-300 transform hover:scale-105">
+                    ЗАКАЗ СТОЛИКА
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- SECTION: HOW TO BOOK (Interactive Bot Slider) -->
-    <section id="how-to-book" class="py-20 bg-brandBg relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-                <div>
-                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Как забронировать зал?</h2>
-                    <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2">Бронирование по шагам в чат-боте Telegram</p>
-                </div>
-                <!-- Navigation Arrows -->
-                <div class="flex items-center gap-3 mt-4 md:mt-0">
-                    <span id="stepCounter" class="text-sm font-bold text-gray-400 mr-2">Шаг 1 из 5</span>
-                    <button onclick="prevStep()" class="w-10 h-10 rounded-full bg-brandCard border border-brandBorder flex items-center justify-center text-white hover:text-brandOrange transition-colors">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button onclick="nextStep()" class="w-10 h-10 rounded-full bg-brandCard border border-brandBorder flex items-center justify-center text-white hover:text-brandOrange transition-colors">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
+    <!-- Featured Dishes / Burgers Section ("Наши Блюда") -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Title -->
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900">
+                    Наши <span class="text-brand-orange">Блюда</span>
+                </h2>
             </div>
 
-            <!-- Steps Cards Container -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="stepsContainer">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 
-                <!-- Step 1 -->
-                <div class="step-card bg-brandCard border-2 border-brandOrange rounded-2xl p-4 transition-all duration-300 relative overflow-hidden" data-step="1">
-                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brandOrange text-white font-bold text-xs flex items-center justify-center">1</div>
-                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-between border border-brandBorder">
-                        <div class="space-y-2 text-[10px]">
-                            <div class="bg-gray-800 text-gray-300 p-2 rounded-lg max-w-[80%]">Добро пожаловать в XARIZMA Bot!</div>
-                            <div class="bg-brandOrange/20 text-brandOrange border border-brandOrange/40 p-2 rounded-lg ml-auto max-w-[80%] font-semibold">/start</div>
-                        </div>
-                        <a href="https://t.me/fh_harizma_bot" target="_blank" class="w-full bg-sky-500 hover:bg-sky-600 text-white text-[11px] font-bold py-2 rounded-lg text-center transition-colors">
-                            <i class="fa-brands fa-telegram mr-1"></i> Открыть бот
-                        </a>
-                    </div>
-                    <h4 class="text-sm font-bold text-white text-center">Перейти в чат-бот</h4>
-                    <p class="text-[11px] text-gray-400 text-center mt-1">@fh_harizma_bot</p>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="2">
-                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">2</div>
-                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center gap-2 border border-brandBorder">
-                        <div class="bg-gray-800 text-gray-200 text-[10px] p-2 rounded-lg text-center">Выберите количество человек</div>
-                        <div class="space-y-1">
-                            <div class="bg-brandCard p-1.5 rounded text-[10px] text-center text-gray-300 border border-brandBorder">1 - 2 человека</div>
-                            <div class="bg-brandOrange/20 p-1.5 rounded text-[10px] text-center text-brandOrange font-bold border border-brandOrange">4 - 6 человек</div>
-                            <div class="bg-brandCard p-1.5 rounded text-[10px] text-center text-gray-300 border border-brandBorder">7 - 10 человек</div>
-                        </div>
-                    </div>
-                    <h4 class="text-sm font-bold text-white text-center">Количество человек</h4>
-                    <p class="text-[11px] text-gray-400 text-center mt-1">Укажите размер компании</p>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="3">
-                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">3</div>
-                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center gap-2 border border-brandBorder">
-                        <div class="bg-gray-800 text-gray-200 text-[10px] p-2 rounded-lg text-center">Время посещения</div>
-                        <div class="bg-brandOrange/20 border border-brandOrange p-2 rounded text-center">
-                            <span class="text-xs font-bold text-brandOrange block">2 ЧАСА</span>
-                            <span class="text-[9px] text-gray-400">Цена: от 2 000 ₽</span>
-                        </div>
-                    </div>
-                    <h4 class="text-sm font-bold text-white text-center">Время посещения</h4>
-                    <p class="text-[11px] text-gray-400 text-center mt-1">Выберите часы аренды</p>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="4">
-                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">4</div>
-                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center border border-brandBorder">
-                        <div class="grid grid-cols-2 gap-1 text-[9px] text-center">
-                            <div class="bg-brandCard p-2 rounded border border-brandBorder text-gray-300">Сегодня</div>
-                            <div class="bg-brandOrange/20 p-2 rounded border border-brandOrange font-bold text-brandOrange">Завтра</div>
-                            <div class="bg-brandCard p-2 rounded border border-brandBorder text-gray-300">Пятница</div>
-                            <div class="bg-brandCard p-2 rounded border border-brandBorder text-gray-300">Суббота</div>
-                        </div>
-                    </div>
-                    <h4 class="text-sm font-bold text-white text-center">Выбрать дату</h4>
-                    <p class="text-[11px] text-gray-400 text-center mt-1">Календарь брони</p>
-                </div>
-
-                <!-- Step 5 -->
-                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="5">
-                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">5</div>
-                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center items-center text-center border border-brandBorder">
-                        <i class="fa-solid fa-circle-check text-green-500 text-3xl mb-2"></i>
-                        <span class="text-xs font-bold text-white">Бронь подтверждена!</span>
-                        <span class="text-[10px] text-gray-400 mt-1">Ждём вас в XARIZMA</span>
-                    </div>
-                    <h4 class="text-sm font-bold text-white text-center">Время старта</h4>
-                    <p class="text-[11px] text-gray-400 text-center mt-1">Завершение бронирования</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION: FAQ ACCORDION -->
-    <section id="faq" class="py-20 bg-[#16181e] relative border-t border-brandBorder">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                
-                <div class="lg:col-span-7">
-                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Вопросы и ответы</h2>
-                    <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2 mb-8">Мы подготовили ответы на часто задаваемые вопросы</p>
-
-                    <!-- Accordion List -->
-                    <div class="space-y-3" id="faqAccordion">
-                        
-                        <!-- FAQ Item 1 -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Какое у вас караоке?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                Более 50,000 студийных фонограмм. Из них 80% - оригинальные минусовки в качестве PRO (mp3 - WAV). Ежемесячное обновление репертуара. Более 10,000 специальных фонограмм в сопровождении оригинальных видеоклипов.
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 2 -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Есть ли у вас английские песни?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                Да, в нашей каталожной базе представлена огромная коллекция зарубежных композиций на английском, испанском, французском и других языках.
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 3 -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Можно ли подключить телефон?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                Конечно! Вы можете легко подключить свой смартфон через Bluetooth или AUX/HDMI для трансляции собственного медиа-контента или плейлистов.
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 4 -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Сколько микрофонов в каждом зале?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                В каждом зале установлено по 2 беспроводных профессиональных микрофона с хорошей шумоизоляцией и обработкой голоса.
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 5 -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Есть ли оплата картой?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                Да, мы принимаем к оплате наличные, банковские карты через терминал, а также переводы по QR-коду / СБП.
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 6 (Adjusted Drinks Text) -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Можно приносить с собой напитки и еду?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                Да! Вы можете принести с собой любые свои любимые напитки и продукты питания без каких-либо дополнительных сборов и ограничений.
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 7 -->
-                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
-                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
-                                <span>Как рассчитывается стоимость?</span>
-                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
-                            </button>
-                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
-                                Оплата рассчитывается строго почасово за количество гостей в зале без дополнительных депозитов и обязательного заказа по меню.
-                            </div>
-                        </div>
-
+                <!-- Left: Big Pizza Image on dark background -->
+                <div class="relative rounded-lg overflow-hidden shadow-2xl bg-black group">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" 
+                         alt="Fresh Special Pizza" 
+                         class="w-full h-80 sm:h-96 object-cover opacity-90 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-6 left-6 right-6 text-white bg-black/60 p-4 rounded backdrop-blur-sm">
+                        <h3 class="text-lg font-serif font-bold text-amber-400">Фирменная Пицца от Шефа</h3>
+                        <p class="text-xs text-gray-300 mt-1">Традиционное хрустящее тесто, свежий базилик и томаты</p>
                     </div>
                 </div>
 
-                <!-- Right Feature Banner -->
-                <div class="lg:col-span-5 bg-gradient-to-br from-brandCard to-brandBg border border-brandBorder rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-brandOrange/20 border border-brandOrange flex items-center justify-center text-brandOrange text-2xl">
-                            <i class="fa-solid fa-gem"></i>
+                <!-- Right: Burger Menu Items List -->
+                <div class="space-y-6">
+                    
+                    <!-- Mini Burger Item 1 -->
+                    <div class="flex items-center space-x-4 p-2 rounded-lg hover:bg-amber-50/50 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=150&q=80" 
+                             alt="Гамбургер мини" 
+                             class="w-20 h-20 object-cover rounded shadow">
+                        <div class="flex-1 flex items-baseline">
+                            <span class="text-sm sm:text-base font-serif font-bold text-gray-800">Гамбургер мини</span>
+                            <span class="dotted-line"></span>
+                            <span class="text-sm font-bold text-amber-700">220 ₽</span>
                         </div>
-                        <h3 class="text-2xl font-black text-white leading-tight">В нашем заведении премиальный комфорт</h3>
-                        <p class="text-xs text-gray-300 leading-relaxed">
-                            Бельгийский ковролин. На входе выдают <strong class="text-brandOrange">индивидуально запакованные тапочки</strong>, в которые необходимо переобуться для поддержания идеальной чистоты.
-                        </p>
-                    </div>
-
-                    <div class="mt-8 pt-6 border-t border-brandBorder">
-                        <button onclick="openBookingModal('Раздел FAQ')" class="w-full gradient-btn text-white text-sm font-bold uppercase tracking-wider py-4 rounded-xl text-center">
-                            Забронировать зал
+                        <button onclick="addToCart('Гамбургер мини', 220)" class="text-xs text-white bg-brand-orange hover:bg-brand-darkOrange px-3 py-1.5 rounded transition">
+                            <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
+
+                    <!-- Mini Burger Item 2 -->
+                    <div class="flex items-center space-x-4 p-2 rounded-lg hover:bg-amber-50/50 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=150&q=80" 
+                             alt="Гамбургер мини" 
+                             class="w-20 h-20 object-cover rounded shadow">
+                        <div class="flex-1 flex items-baseline">
+                            <span class="text-sm sm:text-base font-serif font-bold text-gray-800">Гамбургер мини</span>
+                            <span class="dotted-line"></span>
+                            <span class="text-sm font-bold text-amber-700">220 ₽</span>
+                        </div>
+                        <button onclick="addToCart('Гамбургер мини', 220)" class="text-xs text-white bg-brand-orange hover:bg-brand-darkOrange px-3 py-1.5 rounded transition">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <!-- Mini Burger Item 3 -->
+                    <div class="flex items-center space-x-4 p-2 rounded-lg hover:bg-amber-50/50 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=150&q=80" 
+                             alt="Гамбургер мини" 
+                             class="w-20 h-20 object-cover rounded shadow">
+                        <div class="flex-1 flex items-baseline">
+                            <span class="text-sm sm:text-base font-serif font-bold text-gray-800">Гамбургер мини</span>
+                            <span class="dotted-line"></span>
+                            <span class="text-sm font-bold text-amber-700">220 ₽</span>
+                        </div>
+                        <button onclick="addToCart('Гамбургер мини', 220)" class="text-xs text-white bg-brand-orange hover:bg-brand-darkOrange px-3 py-1.5 rounded transition">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-black border-t border-brandBorder text-gray-400 text-xs py-12 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 items-center">
+    <!-- Our Menu Section ("Наше меню") -->
+    <section id="our-menu" class="bg-brick-texture py-24 text-white relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white tracking-wide">
+                    Наше <span class="text-brand-orange">меню</span>
+                </h2>
+            </div>
+
+            <!-- 3 Recommended Food Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
-                <!-- Logo -->
-                <div>
-                    <span class="text-3xl font-black tracking-widest text-white">
-                        XARI<span class="text-brandOrange">Z</span>MA
+                <!-- Card 1 -->
+                <div class="bg-white rounded-lg text-gray-800 overflow-hidden shadow-2xl relative pt-6 pb-8 px-6 text-center transform hover:-translate-y-2 transition-all duration-300">
+                    <!-- Recommended Badge -->
+                    <span class="absolute top-0 left-0 bg-brand-orange text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-br">
+                        RECOMMENDED
                     </span>
-                    <p class="text-[11px] text-gray-500 mt-2">Аренда изолированных караоке-залов в самом центре Москвы.</p>
+
+                    <!-- Round Food Image Container with overlapping price -->
+                    <div class="relative w-44 h-44 mx-auto mb-6 mt-4">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80" 
+                             alt="Гамбургер макси" 
+                             class="w-full h-full object-cover rounded-full border-4 border-amber-100 shadow-md">
+                        <div class="absolute bottom-1 right-1 bg-amber-600 text-white font-serif font-bold text-lg w-14 h-14 rounded-full flex items-center justify-center price-badge border-2 border-white">
+                            420
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-serif font-bold text-gray-900 mb-2">Гамбургер макси</h3>
+                    <p class="text-xs text-gray-500 mb-6 leading-relaxed">Максимально толстый слой сочного мяса с авторским соусом</p>
+                    
+                    <button onclick="addToCart('Гамбургер макси', 420)" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-wider py-3 rounded shadow transition">
+                        ЗАКАЗАТЬ
+                    </button>
                 </div>
 
-                <!-- Phone -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
-                        <i class="fa-solid fa-phone"></i>
+                <!-- Card 2 -->
+                <div class="bg-white rounded-lg text-gray-800 overflow-hidden shadow-2xl relative pt-6 pb-8 px-6 text-center transform hover:-translate-y-2 transition-all duration-300">
+                    <div class="relative w-44 h-44 mx-auto mb-6 mt-4">
+                        <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=300&q=80" 
+                             alt="Гамбургер макси" 
+                             class="w-full h-full object-cover rounded-full border-4 border-amber-100 shadow-md">
+                        <div class="absolute bottom-1 right-1 bg-amber-600 text-white font-serif font-bold text-lg w-14 h-14 rounded-full flex items-center justify-center price-badge border-2 border-white">
+                            420
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-[10px] text-gray-500 uppercase block">Телефон для брони</span>
-                        <a href="tel:+79979709090" class="text-white font-bold hover:text-brandOrange transition-colors">+7 (997) 970-90-90</a>
-                    </div>
+
+                    <h3 class="text-lg font-serif font-bold text-gray-900 mb-2">Гамбургер макси</h3>
+                    <p class="text-xs text-gray-500 mb-6 leading-relaxed">Максимально толстый слой сочного мяса с авторским соусом</p>
+                    
+                    <button onclick="addToCart('Гамбургер макси', 420)" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-wider py-3 rounded shadow transition">
+                        ЗАКАЗАТЬ
+                    </button>
                 </div>
 
-                <!-- Hours -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
-                        <i class="fa-regular fa-calendar-check"></i>
+                <!-- Card 3 -->
+                <div class="bg-white rounded-lg text-gray-800 overflow-hidden shadow-2xl relative pt-6 pb-8 px-6 text-center transform hover:-translate-y-2 transition-all duration-300">
+                    <div class="relative w-44 h-44 mx-auto mb-6 mt-4">
+                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=300&q=80" 
+                             alt="Гамбургер макси" 
+                             class="w-full h-full object-cover rounded-full border-4 border-amber-100 shadow-md">
+                        <div class="absolute bottom-1 right-1 bg-amber-600 text-white font-serif font-bold text-lg w-14 h-14 rounded-full flex items-center justify-center price-badge border-2 border-white">
+                            420
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-[10px] text-gray-500 uppercase block">Режим работы</span>
-                        <span class="text-white font-bold">Пн — Вс круглосуточно</span>
-                    </div>
-                </div>
 
-                <!-- Location & Route -->
-                <div class="flex flex-col gap-2">
-                    <div class="flex items-center gap-2 text-white">
-                        <i class="fa-solid fa-location-dot text-brandOrange"></i>
-                        <span>м. Лубянка, ул. Сретенский переулок, 4</span>
-                    </div>
-                    <a href="https://yandex.ru/maps" target="_blank" class="bg-brandCard hover:bg-brandCardHover border border-brandBorder text-gray-200 font-semibold px-4 py-2.5 rounded-xl text-center transition-colors text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-route text-brandOrange"></i> Построить маршрут
-                    </a>
+                    <h3 class="text-lg font-serif font-bold text-gray-900 mb-2">Гамбургер макси</h3>
+                    <p class="text-xs text-gray-500 mb-6 leading-relaxed">Максимально толстый слой сочного мяса с авторским соусом</p>
+                    
+                    <button onclick="addToCart('Гамбургер макси', 420)" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-wider py-3 rounded shadow transition">
+                        ЗАКАЗАТЬ
+                    </button>
                 </div>
 
             </div>
 
-            <div class="border-t border-brandBorder/50 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-gray-500">
-                <span>© XARIZMA Karaoke Club. Все права защищены.</span>
-                <span>Напитки и еда без пробкового сбора</span>
+        </div>
+    </section>
+
+    <!-- Customer Testimonials Section -->
+    <section class="py-20 bg-gray-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            
+            <div id="testimonial-container" class="min-h-[220px] flex flex-col justify-center items-center">
+                <!-- Quote text -->
+                <p id="testimonial-quote" class="italic text-gray-700 text-sm sm:text-base leading-relaxed max-w-2xl font-serif">
+                    "Я надолго запомню мой День рождения, проведённый в этом ресторане! Кусочек родной Армении!!! Отдельное спасибо за комплемент в виде фруктовой тарелки. Будем рекомендовать этот ресторан своим друзьям и родственникам также за рубежом, путешествующих в Санкт-Петербург!!"
+                </p>
+
+                <!-- Customer Info -->
+                <div class="mt-8 flex flex-col items-center">
+                    <img id="testimonial-avatar" 
+                         src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" 
+                         alt="Николай" 
+                         class="w-16 h-16 rounded-full border-2 border-white shadow-md object-cover">
+                    <span id="testimonial-role" class="text-xs text-gray-500 mt-2 font-medium">Посетитель</span>
+                    <span id="testimonial-name" class="text-sm font-bold text-gray-900 mt-0.5">Николай</span>
+                </div>
+            </div>
+
+            <!-- Carousel Pagination Dots -->
+            <div class="flex justify-center space-x-2 mt-6">
+                <button onclick="switchTestimonial(0)" class="dot-btn w-2.5 h-2.5 rounded-full bg-brand-orange transition-all"></button>
+                <button onclick="switchTestimonial(1)" class="dot-btn w-2.5 h-2.5 rounded-full bg-gray-400 hover:bg-gray-600 transition-all"></button>
+                <button onclick="switchTestimonial(2)" class="dot-btn w-2.5 h-2.5 rounded-full bg-gray-400 hover:bg-gray-600 transition-all"></button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Gallery Dishes & Our Chefs Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Gallery Title -->
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900">
+                    Галерея <span class="text-brand-orange">Блюд</span>
+                </h2>
+            </div>
+
+            <!-- Food Photos Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-24">
+                <div class="h-56 rounded overflow-hidden shadow hover:shadow-xl transition group">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=500&q=80" alt="Wine glasses" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="h-56 rounded overflow-hidden shadow hover:shadow-xl transition group">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80" alt="Coffee and dessert" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="h-56 rounded overflow-hidden shadow hover:shadow-xl transition group">
+                    <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=500&q=80" alt="Soup dish" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="h-56 rounded overflow-hidden shadow hover:shadow-xl transition group">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80" alt="Coffee art" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="h-56 rounded overflow-hidden shadow hover:shadow-xl transition group">
+                    <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=500&q=80" alt="Fresh soup bowl" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="h-56 rounded overflow-hidden shadow hover:shadow-xl transition group">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=500&q=80" alt="Wine restaurant" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+            </div>
+
+            <!-- Chefs Title -->
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900">
+                    Наши <span class="text-brand-orange">Повара</span>
+                </h2>
+            </div>
+
+            <!-- Chefs Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="rounded-lg overflow-hidden shadow-lg border border-gray-100 group">
+                    <div class="h-80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=500&q=80" alt="Chef female" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden shadow-lg border border-gray-100 group">
+                    <div class="h-80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=500&q=80" alt="Chef making pizza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden shadow-lg border border-gray-100 group">
+                    <div class="h-80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?auto=format&fit=crop&w=500&q=80" alt="Chef plating" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer Section with Background Interior & Table Reservation -->
+    <footer id="reservation" class="bg-footer-interior text-white relative pt-20 pb-12 border-t border-amber-900/40">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Footer Info Column -->
+                <div class="space-y-6 text-center lg:text-left">
+                    <h3 class="text-3xl font-serif font-bold text-amber-400">Дом Лучшей Еды</h3>
+                    <p class="text-sm text-gray-300 max-w-md mx-auto lg:mx-0 leading-relaxed">
+                        Приходите за незабываемыми гастрономическими впечатлениями. Мы всегда рады видеть вас и ваших гостей!
+                    </p>
+                    <div class="space-y-3 text-sm text-gray-300">
+                        <p><i class="fa-solid fa-location-dot text-brand-orange mr-3"></i> Санкт-Петербург, Невский проспект, 45</p>
+                        <p><i class="fa-solid fa-clock text-brand-orange mr-3"></i> Ежедневно с 11:00 до 23:00</p>
+                        <p><i class="fa-solid fa-phone text-brand-orange mr-3"></i> +999-888-76-54</p>
+                    </div>
+                </div>
+
+                <!-- Quick Reservation Card -->
+                <div class="bg-zinc-900/90 p-8 rounded-lg border border-amber-900/50 shadow-2xl backdrop-blur-md">
+                    <h4 class="text-xl font-serif font-bold text-amber-400 mb-6 text-center">Забронировать стол</h4>
+                    <form onsubmit="handleBookingSubmit(event)" class="space-y-4">
+                        <div>
+                            <input type="text" required placeholder="Ваше имя" class="w-full px-4 py-3 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
+                        </div>
+                        <div>
+                            <input type="tel" required placeholder="Телефон" class="w-full px-4 py-3 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="date" required class="w-full px-4 py-3 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
+                            <select class="w-full px-4 py-3 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
+                                <option value="2">2 человека</option>
+                                <option value="3">3-4 человека</option>
+                                <option value="5">5+ человек</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase tracking-wider py-4 rounded transition">
+                            ОТПРАВИТЬ ЗАЯВКУ
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Copyright Line -->
+            <div class="mt-16 pt-8 border-t border-zinc-800 text-center text-xs text-gray-500">
+                <p>&copy; 2026 Дом Лучшей Еды. Все права защищены.</p>
             </div>
         </div>
-
-        <!-- Scroll To Top Floating Button -->
-        <button onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-brandCard/80 backdrop-blur border border-brandBorder text-white hover:text-brandOrange flex items-center justify-center shadow-xl transition-colors z-30">
-            <i class="fa-solid fa-arrow-up"></i>
-        </button>
     </footer>
 
-    <!-- BOOKING MODAL -->
-    <div id="bookingModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-brandCard border border-brandBorder rounded-2xl w-full max-w-md p-6 sm:p-8 relative shadow-2xl">
-            <!-- Close Button -->
-            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
-                <i class="fa-solid fa-xmark text-xl"></i>
+    <!-- Table Booking Modal -->
+    <div id="booking-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-amber-900/60 text-white rounded-lg p-8 max-w-md w-full relative shadow-2xl">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
             </button>
-
-            <div class="mb-6">
-                <h3 class="text-2xl font-black text-white uppercase" id="modalTargetTitle">Забронировать зал</h3>
-                <p class="text-xs text-brandOrange font-semibold mt-1">Оставьте заявку, и мы свяжемся с вами в течение 5 минут</p>
-            </div>
-
-            <form id="modalForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+            <h3 class="text-2xl font-serif font-bold text-amber-400 mb-2 text-center">Заказ Столика</h3>
+            <p class="text-xs text-gray-400 mb-6 text-center">Оставьте контакты и мы перезвоним для подтверждения</p>
+            
+            <form onsubmit="handleBookingSubmit(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ваше имя</label>
-                    <input type="text" required placeholder="Александр" class="w-full bg-[#121316] border border-brandBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                    <label class="block text-xs text-gray-400 mb-1">Имя</label>
+                    <input type="text" required placeholder="Иван Иванов" class="w-full px-4 py-2.5 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
                 </div>
-
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Телефон</label>
-                    <input type="tel" required placeholder="+7 (999) 000-00-00" class="w-full bg-[#121316] border border-brandBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                    <label class="block text-xs text-gray-400 mb-1">Номер телефона</label>
+                    <input type="tel" required placeholder="+7 (999) 000-00-00" class="w-full px-4 py-2.5 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
                 </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Дата</label>
-                        <input type="date" required class="w-full bg-[#121316] border border-brandBorder rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Гостей</label>
-                        <select class="w-full bg-[#121316] border border-brandBorder rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
-                            <option>1 - 2 человека</option>
-                            <option>3 - 5 человек</option>
-                            <option>6 - 10 человек</option>
-                            <option>Более 10 человек</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Желаемый зал</label>
-                    <select id="modalRoomSelect" class="w-full bg-[#121316] border border-brandBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
-                        <option>HALL №1 (до 20 чел)</option>
-                        <option>HALL №2 (до 10 чел)</option>
-                        <option>HALL №3 (до 8 чел)</option>
-                        <option>HALL №5 (до 15 чел)</option>
-                    </select>
+                    <label class="block text-xs text-gray-400 mb-1">Количество гостей</label>
+                    <input type="number" min="1" max="20" value="2" class="w-full px-4 py-2.5 rounded bg-zinc-800 text-white border border-zinc-700 text-xs focus:outline-none focus:border-brand-orange">
                 </div>
-
-                <button type="submit" class="w-full gradient-btn text-white font-bold uppercase tracking-wider py-4 rounded-xl text-sm mt-2">
-                    Отправить заявку
+                <button type="submit" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase py-3.5 rounded transition mt-4">
+                    Забронировать
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- SUCCESS MESSAGE DIALOG -->
-    <div id="successModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-brandCard border border-brandBorder rounded-2xl w-full max-w-sm p-6 text-center space-y-4">
-            <div class="w-16 h-16 rounded-full bg-green-500/20 text-green-500 border border-green-500 flex items-center justify-center mx-auto text-3xl">
-                <i class="fa-solid fa-check"></i>
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white text-gray-800 rounded-lg p-6 max-w-md w-full relative shadow-2xl">
+            <button onclick="closeCartModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-serif font-bold text-gray-900 mb-4 flex items-center">
+                <i class="fa-solid fa-cart-shopping text-brand-orange mr-2"></i> Ваша корзина
+            </h3>
+            
+            <div id="cart-items-list" class="max-h-60 overflow-y-auto space-y-3 mb-4 divide-y divide-gray-100">
+                <p class="text-xs text-gray-500 py-4 text-center">Корзина пуста. Выберите блюда из меню!</p>
             </div>
-            <h3 class="text-xl font-bold text-white uppercase">Заявка принята!</h3>
-            <p class="text-xs text-gray-300">Наш администратор перезвонит вам в ближайшее время для подтверждения брони.</p>
-            <button onclick="closeSuccessModal()" class="w-full bg-brandOrange text-white font-bold py-3 rounded-xl text-sm uppercase">
-                Понятно
+
+            <div class="border-t border-gray-200 pt-4 flex justify-between items-center mb-6">
+                <span class="font-bold text-sm">Итого:</span>
+                <span id="cart-total-price" class="text-lg font-serif font-bold text-brand-orange">0 ₽</span>
+            </div>
+
+            <button onclick="checkoutCart()" class="w-full bg-brand-orange hover:bg-brand-darkOrange text-white text-xs font-bold uppercase py-3.5 rounded transition">
+                Оформить заказ
             </button>
         </div>
     </div>
 
+    <!-- JavaScript Interactions -->
     <script>
-        /* Room switching data */
-        const roomsData = {
-            1: {
-                title: "HALL №1",
-                area: "40 м²",
-                capacity: "до 20-ти человек",
-                desc: "Просторный зал с яркой неоновой подсветкой, большим экраном и мощной акустической системой. Идеален для празднования дней рождения и корпоративов.",
-                images: [
-                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop"
-                ]
-            },
-            2: {
-                title: "HALL №2",
-                area: "25 м²",
-                capacity: "до 10-ти человек",
-                desc: "Уютная комната для небольших компаний. Удобные мягкие диваны, клубное освещение и профессиональная система караоке AST-50.",
-                images: [
-                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop"
-                ]
-            },
-            3: {
-                title: "HALL №3",
-                area: "20 м²",
-                capacity: "до 8-ми человек",
-                desc: "Камерный стильный зал для романтических встреч или отдыха с самыми близкими друзьями.",
-                images: [
-                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop"
-                ]
-            },
-            5: {
-                title: "HALL №5",
-                area: "32 м²",
-                capacity: "до 15-ти человек",
-                desc: "Современный зал с панорамной системой звука и проектором высокого разрешения.",
-                images: [
-                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop"
-                ]
-            }
-        };
+        /* Mobile Menu Toggle */
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-        function switchRoom(hallNum) {
-            const data = roomsData[hallNum];
-            if (!data) return;
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
 
-            // Update text
-            document.getElementById('roomTitle').innerText = data.title;
-            document.getElementById('roomArea').innerText = data.area;
-            document.getElementById('roomCapacity').innerText = data.capacity;
-            document.getElementById('roomDesc').innerText = data.desc;
-            document.getElementById('roomBookBtn').setAttribute('onclick', `openBookingModal('${data.title}')`);
-
-            // Update tab styles
-            document.querySelectorAll('.room-tab').forEach(btn => {
-                if (btn.getAttribute('data-hall') == hallNum) {
-                    btn.className = "room-tab border border-brandOrange bg-brandOrange text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all";
-                } else {
-                    btn.className = "room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all";
-                }
-            });
-
-            // Update Gallery
-            document.getElementById('mainRoomImg').src = data.images[0];
-            const thumbContainer = document.getElementById('galleryThumbnails');
-            thumbContainer.innerHTML = '';
-
-            data.images.forEach((imgUrl, index) => {
-                const btn = document.createElement('button');
-                btn.onclick = function() { setMainImage(this); };
-                btn.className = index === 0 
-                    ? "rounded-xl overflow-hidden border-2 border-brandOrange opacity-100 transition-all h-20"
-                    : "rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20";
-                btn.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
-                thumbContainer.appendChild(btn);
-            });
-        }
-
-        function setMainImage(btnElem) {
-            const imgSrc = btnElem.querySelector('img').src;
-            document.getElementById('mainRoomImg').src = imgSrc;
-            
-            document.querySelectorAll('#galleryThumbnails button').forEach(b => {
-                b.className = "rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20";
-            });
-            btnElem.className = "rounded-xl overflow-hidden border-2 border-brandOrange opacity-100 transition-all h-20";
-        }
-
-        /* FAQ Accordion Toggle */
-        function toggleFaq(btn) {
-            const answer = btn.nextElementSibling;
-            const icon = btn.querySelector('i');
-            const isHidden = answer.classList.contains('hidden');
-
-            document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.add('hidden'));
-            document.querySelectorAll('#faqAccordion i').forEach(ic => ic.style.transform = 'rotate(0deg)');
-
-            if (isHidden) {
-                answer.classList.remove('hidden');
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
-
-        /* Step Slider Control */
-        let currentStep = 1;
-        function updateSteps() {
-            const cards = document.querySelectorAll('.step-card');
-            cards.forEach((card, idx) => {
-                const stepNum = idx + 1;
-                if (stepNum === currentStep) {
-                    card.classList.remove('opacity-60', 'border-brandBorder');
-                    card.classList.add('opacity-100', 'border-brandOrange', 'border-2');
-                } else {
-                    card.classList.remove('opacity-100', 'border-brandOrange', 'border-2');
-                    card.classList.add('opacity-60', 'border-brandBorder', 'border');
-                }
-            });
-            document.getElementById('stepCounter').innerText = `Шаг ${currentStep} из 5`;
-        }
-
-        function nextStep() {
-            if (currentStep < 5) {
-                currentStep++;
-                updateSteps();
-            }
-        }
-
-        function prevStep() {
-            if (currentStep > 1) {
-                currentStep--;
-                updateSteps();
-            }
-        }
-
-        /* Mobile Menu */
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        /* Booking Modal */
-        function openBookingModal(sourceTitle) {
-            document.getElementById('modalTargetTitle').innerText = `Забронировать: ${sourceTitle}`;
-            document.getElementById('bookingModal').classList.remove('hidden');
+        /* Modals Control */
+        function openBookingModal() {
+            document.getElementById('booking-modal').classList.add('modal-active');
         }
 
         function closeBookingModal() {
-            document.getElementById('bookingModal').classList.add('hidden');
+            document.getElementById('booking-modal').classList.remove('modal-active');
         }
 
-        function handleFormSubmit(e) {
+        function openCartModal() {
+            document.getElementById('cart-modal').classList.add('modal-active');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.remove('modal-active');
+        }
+
+        function handleBookingSubmit(e) {
             e.preventDefault();
+            alert('Спасибо! Ваша заявка на бронирование принята. Мы свяжемся с вами в ближайшее время.');
             closeBookingModal();
-            document.getElementById('successModal').classList.remove('hidden');
         }
 
-        function closeSuccessModal() {
-            document.getElementById('successModal').classList.add('hidden');
+        /* Cart State Management */
+        let cart = [];
+
+        function addToCart(title, price) {
+            const existing = cart.find(item => item.title === title);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ title, price, quantity: 1 });
+            }
+            updateCartUI();
+            
+            // Brief notification
+            const cartBtn = document.querySelector('.fa-cart-shopping');
+            if (cartBtn) {
+                cartBtn.classList.add('scale-125', 'text-brand-orange');
+                setTimeout(() => cartBtn.classList.remove('scale-125', 'text-brand-orange'), 300);
+            }
         }
 
-        /* Scroll to top */
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function updateCartUI() {
+            const countBadges = document.querySelectorAll('#cart-count');
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            countBadges.forEach(badge => badge.textContent = totalCount);
+
+            const cartList = document.getElementById('cart-items-list');
+            const totalPriceEl = document.getElementById('cart-total-price');
+
+            if (cart.length === 0) {
+                cartList.innerHTML = '<p class="text-xs text-gray-500 py-4 text-center">Корзина пуста. Выберите блюда из меню!</p>';
+                totalPriceEl.textContent = '0 ₽';
+                return;
+            }
+
+            let total = 0;
+            cartList.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                return `
+                    <div class="flex justify-between items-center pt-2 text-xs">
+                        <div>
+                            <span class="font-semibold text-gray-800">${item.title}</span>
+                            <span class="text-gray-400 block">${item.price} ₽ x ${item.quantity}</span>
+                        </div>
+                        <span class="font-bold text-amber-700">${itemTotal} ₽</span>
+                    </div>
+                `;
+            }).join('');
+
+            totalPriceEl.textContent = `${total} ₽`;
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert('Ваша корзина пуста!');
+                return;
+            }
+            alert('Ваш заказ оформлен! Менеджер свяжется с вами для подтверждения.');
+            cart = [];
+            updateCartUI();
+            closeCartModal();
+        }
+
+        /* Testimonials Slider */
+        const testimonials = [
+            {
+                quote: `"Я надолго запомню мой День рождения, проведённый в этом ресторане! Кусочек родной Армении!!! Отдельное спасибо за комплемент в виде фруктовой тарелки. Будем рекомендовать этот ресторан своим друзьям и родственникам также за рубежом, путешествующих в Санкт-Петербург!!"`,
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+                role: "Посетитель",
+                name: "Николай"
+            },
+            {
+                quote: `"Изумительная кухня и невероятная атмосфера! Очень понравился Гамбургер макси и фирменная пицца. Обслуживание на высшем уровне, обязательно вернемся всей семьей."`,
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+                role: "Посетитель",
+                name: "Екатерина"
+            },
+            {
+                quote: `"Прекрасный уютный ресторан в центре города. Приемлемые цены и огромные порции! Рекомендую бронировать столики заранее."`,
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80",
+                role: "Посетитель",
+                name: "Александр"
+            }
+        ];
+
+        function switchTestimonial(index) {
+            const data = testimonials[index];
+            document.getElementById('testimonial-quote').textContent = data.quote;
+            document.getElementById('testimonial-avatar').src = data.avatar;
+            document.getElementById('testimonial-role').textContent = data.role;
+            document.getElementById('testimonial-name').textContent = data.name;
+
+            const dots = document.querySelectorAll('.dot-btn');
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.className = "dot-btn w-2.5 h-2.5 rounded-full bg-brand-orange transition-all";
+                } else {
+                    dot.className = "dot-btn w-2.5 h-2.5 rounded-full bg-gray-400 hover:bg-gray-600 transition-all";
+                }
+            });
         }
     </script>
 </body>
