@@ -3,411 +3,633 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RunSmart - Подбор пульсометра с учётом вашего уровня подготовки</title>
+    <title>XARIZMA — Аренда караоке-зала в центре Москвы</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brandRed: '#c70101',
-                        brandRedHover: '#a10000',
-                        brandDark: '#1d1d1d',
-                        brandGrayBg: '#f6f6f6'
+                        brandBg: '#121316',
+                        brandCard: '#1e2026',
+                        brandCardHover: '#262932',
+                        brandOrange: '#ff6b00',
+                        brandYellow: '#ffa800',
+                        brandBorder: 'rgba(255, 255, 255, 0.08)',
                     },
                     fontFamily: {
-                        sans: ['Museo Sans', 'Inter', 'sans-serif']
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .card-flip-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
+        body {
+            background-color: #121316;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
-        .card-flipped .card-flip-inner {
-            transform: rotateY(180deg);
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #ff6b00 0%, #ffa800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .card-front, .card-back {
-            backface-visibility: hidden;
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #ff6b00 0%, #ffa800 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.35);
         }
-        .card-back {
-            transform: rotateY(180deg);
+
+        .gradient-btn:hover {
+            box-shadow: 0 6px 28px rgba(255, 107, 0, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .gradient-btn:active {
+            transform: translateY(0);
+        }
+
+        .hero-bg {
+            background: linear-gradient(180deg, rgba(18, 19, 22, 0.75) 0%, rgba(18, 19, 22, 0.95) 100%), 
+                        url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121316;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2d36;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff6b00;
+        }
+
+        .pulse-badge {
+            box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 12px rgba(255, 107, 0, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 107, 0, 0);
+            }
         }
     </style>
 </head>
-<body class="bg-white text-zinc-800 antialiased selection:bg-brandRed selection:text-white">
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brandOrange selection:text-white">
 
-    <!-- SECTION 1: HERO SECTION -->
-    <section class="relative min-h-screen bg-cover bg-center text-white flex flex-col justify-between py-6"
-             style="background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1920&q=80');">
-        
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <!-- Header -->
-            <header class="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-brandRed rounded-full flex items-center justify-center text-white text-xl">
-                        <i class="fa-solid fa-person-running"></i>
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-[#121316]/90 backdrop-blur-md border-b border-brandBorder transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <span class="text-3xl font-black tracking-widest text-white group-hover:text-brandOrange transition-colors">
+                    XARI<span class="text-brandOrange">Z</span>MA
+                </span>
+            </a>
+
+            <!-- Info Nav (Desktop) -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="tel:+79979709090" class="flex items-center gap-2.5 text-gray-300 hover:text-white transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
+                        <i class="fa-solid fa-phone text-xs"></i>
                     </div>
-                    <div>
-                        <div class="text-2xl font-black tracking-tight leading-none">RunSmart</div>
-                        <div class="text-[11px] text-zinc-300 font-light mt-1 tracking-wide">бегай легко - укрепляй здоровье</div>
+                    <span>+7 (997) 970-90-90</span>
+                </a>
+                <div class="flex items-center gap-2.5 text-gray-300">
+                    <div class="w-8 h-8 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
+                        <i class="fa-solid fa-location-dot text-xs"></i>
                     </div>
+                    <span>м. Лубянка</span>
                 </div>
+                <a href="#rooms" class="text-gray-300 hover:text-brandOrange transition-colors uppercase tracking-wider text-xs font-semibold">Наши залы</a>
+            </div>
 
-                <!-- Middle Subtitle -->
-                <div class="text-center md:text-left text-xs sm:text-sm text-zinc-200">
-                    <span class="block text-zinc-400 text-[11px] uppercase tracking-wider">Официальный представитель</span>
-                    <span class="font-bold text-white">Garmin, Polar, Suunto</span>
-                </div>
+            <!-- Header Action Button -->
+            <div class="flex items-center gap-3">
+                <button onclick="openBookingModal('Общая бронь')" class="gradient-btn text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-3 rounded-xl flex items-center gap-2">
+                    <i class="fa-regular fa-calendar-check text-base"></i>
+                    <span>Забронировать</span>
+                </button>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-400 hover:text-white rounded-lg focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
 
-                <!-- Right Side Phone & Call Button -->
-                <div class="flex flex-col items-end space-y-2">
-                    <a href="tel:+74999228974" class="text-base sm:text-lg font-bold hover:text-brandRed transition">+7 (499) 922-89-74</a>
-                    <button onclick="openModal('Заказать звонок')" class="bg-brandRed hover:bg-brandRedHover text-white text-xs font-bold uppercase px-5 py-2.5 rounded shadow transition transform hover:scale-105">
-                        ЗАКАЗАТЬ ЗВОНОК
-                    </button>
-                </div>
-            </header>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-brandCard border-b border-brandBorder px-4 pt-3 pb-6 space-y-4">
+            <a href="tel:+79979709090" class="flex items-center gap-3 text-gray-200 py-2">
+                <i class="fa-solid fa-phone text-brandOrange"></i>
+                <span>+7 (997) 970-90-90</span>
+            </a>
+            <div class="flex items-center gap-3 text-gray-200 py-2">
+                <i class="fa-solid fa-location-dot text-brandOrange"></i>
+                <span>м. Лубянка, ул. Сретенский переулок, 4</span>
+            </div>
+            <div class="pt-2 border-t border-brandBorder flex flex-col gap-3">
+                <a href="#rooms" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Наши залы</a>
+                <a href="#advantages" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Преимущества</a>
+                <a href="#how-to-book" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Как забронировать</a>
+                <a href="#faq" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brandOrange py-1 font-medium">Частые вопросы</a>
+            </div>
+        </div>
+    </header>
 
-            <!-- Main Banner Content -->
-            <div class="flex flex-col items-end text-right my-12 sm:my-20">
-                <h1 class="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight max-w-2xl leading-tight mb-4">
-                    ПОДБОР ПУЛЬСОМЕТРА
-                </h1>
-                <h2 class="text-base sm:text-xl md:text-2xl font-semibold uppercase text-zinc-200 mb-10 max-w-xl">
-                    С УЧЁТОМ ВАШЕГО УРОВНЯ ПОДГОТОВКИ
-                </h2>
+    <!-- HERO SECTION -->
+    <section class="relative hero-bg py-16 lg:py-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-8">
+                    <div class="inline-flex items-center gap-2 bg-brandCard/80 backdrop-blur border border-brandBorder px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-gray-300">
+                        <span class="w-2 h-2 rounded-full bg-brandOrange animate-ping"></span>
+                        <span>Караоке-клуб в центре Москвы</span>
+                    </div>
 
-                <!-- 3 Key Features -->
-                <div class="grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mb-10 text-center">
-                    <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 mb-3 rounded-full border border-white/30 flex items-center justify-center text-xl text-white">
-                            <i class="fa-regular fa-clock"></i>
+                    <h2 class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-brandOrange">
+                        Арендуй караоке-зал до 10 человек
+                    </h2>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-tight tracking-tight text-white">
+                        Возьми <span class="gradient-text">напитки</span> <br class="hidden sm:inline"/>и еду с собой
+                    </h1>
+
+                    <!-- Feature Checks -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="flex items-start gap-3 bg-brandCard/60 backdrop-blur p-3 rounded-xl border border-brandBorder">
+                            <i class="fa-solid fa-circle-check text-brandOrange text-lg mt-0.5"></i>
+                            <span class="text-xs font-medium text-gray-200">Если хочешь попеть и оторваться</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-zinc-200">Время подбора: <strong class="block">10 минут</strong></p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 mb-3 rounded-full border border-white/30 flex items-center justify-center text-xl text-white">
-                            <i class="fa-solid fa-truck-fast"></i>
+                        <div class="flex items-start gap-3 bg-brandCard/60 backdrop-blur p-3 rounded-xl border border-brandBorder">
+                            <i class="fa-solid fa-circle-check text-brandOrange text-lg mt-0.5"></i>
+                            <span class="text-xs font-medium text-gray-200">Отдохнуть после работы</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-zinc-200">Бесплатная <strong class="block">доставка</strong></p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 mb-3 rounded-full border border-white/30 flex items-center justify-center text-xl text-white">
-                            <i class="fa-regular fa-comments"></i>
+                        <div class="flex items-start gap-3 bg-brandCard/60 backdrop-blur p-3 rounded-xl border border-brandBorder">
+                            <i class="fa-solid fa-circle-check text-brandOrange text-lg mt-0.5"></i>
+                            <span class="text-xs font-medium text-gray-200">Хорошо провести время</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-zinc-200">Ответим на <strong class="block">все вопросы</strong></p>
+                    </div>
+
+                    <!-- Call to Action Button & Telegram Widget Link -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+                        <button onclick="openBookingModal('Главная страница')" class="gradient-btn text-white text-base font-bold uppercase tracking-wider px-8 py-4 rounded-xl text-center">
+                            Забронировать онлайн
+                        </button>
+                        <a href="https://t.me/fh_harizma_bot" target="_blank" class="bg-brandCard hover:bg-brandCardHover border border-brandBorder text-gray-200 font-semibold px-6 py-4 rounded-xl flex items-center justify-center gap-3 transition-colors">
+                            <i class="fa-brands fa-telegram text-sky-400 text-xl"></i>
+                            <span>Связаться в Telegram</span>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Call to Action Buttons -->
-                <div class="flex flex-col items-end space-y-3">
-                    <button onclick="openModal('Заказать консультацию')" class="bg-brandRed hover:bg-brandRedHover text-white text-sm sm:text-base font-bold uppercase px-8 py-4 rounded shadow-lg transition transform hover:-translate-y-0.5">
-                        ЗАКАЗАТЬ КОНСУЛЬТАЦИЮ
-                    </button>
-                    <a href="#catalog" class="text-xs text-zinc-300 hover:text-white underline uppercase tracking-wider">
-                        или ПЕРЕЙТИ В КАТАЛОГ
-                    </a>
+                <!-- Hero Graphic Badge / 24 Hours Info -->
+                <div class="lg:col-span-5 flex justify-center lg:justify-end">
+                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full border border-brandBorder bg-gradient-to-br from-brandCard to-[#16181e] flex flex-col items-center justify-center p-6 text-center pulse-badge shadow-2xl">
+                        <div class="w-16 h-16 rounded-full bg-brandOrange/20 border border-brandOrange flex items-center justify-center mb-4">
+                            <i class="fa-regular fa-clock text-brandOrange text-2xl"></i>
+                        </div>
+                        <span class="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1">Можно шуметь</span>
+                        <span class="text-2xl sm:text-3xl font-black text-white gradient-text uppercase">Круглосуточно</span>
+                        <span class="text-xs text-gray-400 mt-2 font-medium">24/7 без ограничений по шуму</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM FEATURE STRIP -->
+        <div class="mt-16 border-t border-b border-brandBorder bg-brandCard/50 backdrop-blur py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+                    <div class="flex flex-col md:flex-row items-center gap-3">
+                        <i class="fa-solid fa-microphone-lines text-2xl text-brandOrange"></i>
+                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Профессиональное караоке AST-50</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center gap-3">
+                        <i class="fa-solid fa-wine-glass text-2xl text-brandOrange"></i>
+                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Без пробкового сбора</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center gap-3">
+                        <i class="fa-solid fa-wallet text-2xl text-brandOrange"></i>
+                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Без депозита</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-center gap-3">
+                        <i class="fa-solid fa-gift text-2xl text-brandOrange"></i>
+                        <span class="text-xs sm:text-sm font-semibold text-gray-200">Скидка в День Рождения</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 2: ADVANTAGES SECTION -->
-    <section class="py-16 md:py-24 bg-brandGrayBg text-zinc-800">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <h2 class="text-2xl sm:text-3xl font-black text-center uppercase tracking-tight mb-16">
-                НАШИ ПРЕИМУЩЕСТВА
-            </h2>
+    <!-- SECTION: OUR ROOMS -->
+    <section id="rooms" class="py-20 bg-brandBg relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Наши залы</h2>
+                    <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2">Ознакомьтесь с атмосферой праздника</p>
+                </div>
+                <!-- Room Tabs -->
+                <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="roomTabs">
+                    <button onclick="switchRoom(1)" class="room-tab border border-brandOrange bg-brandOrange text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="1">HALL №1</button>
+                    <button onclick="switchRoom(2)" class="room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="2">HALL №2</button>
+                    <button onclick="switchRoom(3)" class="room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="3">HALL №3</button>
+                    <button onclick="switchRoom(5)" class="room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all" data-hall="5">HALL №5</button>
+                </div>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Advantage 1 -->
-                <div class="flex flex-col items-center text-center">
-                    <div class="w-16 h-16 text-brandRed text-4xl mb-6 flex items-center justify-center">
-                        <i class="fa-solid fa-trophy"></i>
+            <!-- Room Showcase Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Details Box -->
+                <div class="lg:col-span-4 bg-brandCard border border-brandBorder rounded-2xl p-6 sm:p-8 space-y-6">
+                    <div>
+                        <h3 id="roomTitle" class="text-2xl font-black text-white uppercase">HALL №1</h3>
+                        <p class="text-xs text-gray-400 mt-1">Идеально подходит для вечеринок и праздников</p>
                     </div>
-                    <h3 class="text-lg font-bold mb-3">Делимся опытом</h3>
-                    <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                        Наши сотрудники всегда готовы поделиться своим опытом, так как сами бегают полумарафоны, переплыли Босфор, готовятся к соревнованиям по триатлону!
+
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 bg-brandBg/60 p-3 rounded-xl border border-brandBorder">
+                            <i class="fa-solid fa-[#000] fa-expand text-brandOrange"></i>
+                            <div>
+                                <span class="text-xs text-gray-400 block">Площадь</span>
+                                <span id="roomArea" class="text-sm font-bold text-white">40 м²</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 bg-brandBg/60 p-3 rounded-xl border border-brandBorder">
+                            <i class="fa-solid fa-users text-brandOrange"></i>
+                            <div>
+                                <span class="text-xs text-gray-400 block">Вместимость</span>
+                                <span id="roomCapacity" class="text-sm font-bold text-white">до 20-ти человек</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="roomDesc" class="text-xs text-gray-300 leading-relaxed">
+                        Уютный и просторный зал с лаундж-зоной, современным клубным светом, проектором высокой чёткости и профессиональной акустикой AST-50.
                     </p>
+
+                    <button id="roomBookBtn" onclick="openBookingModal('Зал №1')" class="w-full gradient-btn text-white text-sm font-bold uppercase tracking-wider py-4 rounded-xl text-center">
+                        Забронировать
+                    </button>
+                </div>
+
+                <!-- Right Gallery Viewport -->
+                <div class="lg:col-span-8 space-y-4">
+                    <!-- Main Big Image Display -->
+                    <div class="relative rounded-2xl overflow-hidden border border-brandBorder h-72 sm:h-96 group">
+                        <img id="mainRoomImg" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop" alt="Караоке зал" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                            <span class="text-xs font-semibold text-white/80 bg-black/50 backdrop-blur px-3 py-1 rounded-full border border-white/10">
+                                <i class="fa-solid fa-camera mr-1 text-brandOrange"></i> Фотография зала
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Thumbnails Row -->
+                    <div class="grid grid-cols-4 gap-3" id="galleryThumbnails">
+                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-brandOrange opacity-100 transition-all h-20">
+                            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20">
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20">
+                            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                        <button onclick="setMainImage(this)" class="rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20">
+                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: ADVANTAGES -->
+    <section id="advantages" class="py-20 bg-[#16181e] relative border-t border-brandBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Наши преимущества</h2>
+                <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2">Почему гости выбирают нас</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Advantage 1 -->
+                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
+                            <i class="fa-solid fa-shirt"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Никакого дресс-контроля</h3>
+                        <p class="text-xs text-gray-400">Приходите в удобной для вас одежде, чувствуйте себя свободно и как дома.</p>
+                    </div>
                 </div>
 
                 <!-- Advantage 2 -->
-                <div class="flex flex-col items-center text-center">
-                    <div class="w-16 h-16 text-brandRed text-4xl mb-6 flex items-center justify-center animate-pulse">
-                        <i class="fa-solid fa-heart-pulse"></i>
+                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
+                            <i class="fa-solid fa-compact-disc"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">~ 40.000+ песен в сет-листе</h3>
+                        <p class="text-xs text-gray-400 mb-2">Более 50,000 студийных фонограмм в качестве PRO.</p>
+                        <span class="text-[11px] text-brandOrange font-semibold">• Ежемесячное обновление репертуара</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-3">Заботимся о здоровье</h3>
-                    <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                        Мы работаем для того, чтобы Ваши занятия спортом шли на пользу Вашему здоровью и были в радость Вам и Вашим близким!
-                    </p>
                 </div>
 
                 <!-- Advantage 3 -->
-                <div class="flex flex-col items-center text-center">
-                    <div class="w-16 h-16 text-brandRed text-4xl mb-6 flex items-center justify-center">
-                        <i class="fa-solid fa-shoe-prints"></i>
-                    </div>
-                    <h3 class="text-lg font-bold mb-3">Учим бегать</h3>
-                    <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-xs">
-                        Помогаем с обучением правильной технике бега! Дружим с крупнейшей школой бега в России - <a href="#" class="text-brandRed underline font-medium">I LOVE RUNNING</a>.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 3: CONSULTATION FORM SECTION -->
-    <section class="py-16 md:py-20 bg-cover bg-center text-white relative"
-             style="background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1920&q=80');">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <div class="max-w-xl">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-black uppercase leading-snug mb-3">
-                    ПОЛУЧИТЕ БЕСПЛАТНУЮ КОНСУЛЬТАЦИЮ ПО ПОДБОРУ ПУЛЬСОМЕТРА
-                </h2>
-                <p class="text-xs sm:text-sm text-zinc-300 mb-8">
-                    Просто заполните форму заявки и мы перезвоним вам в течении 10 минут
-                </p>
-
-                <form onsubmit="handleFormSubmit(event)" class="space-y-3 max-w-sm">
-                    <input type="text" placeholder="Ваше имя" required class="w-full px-4 py-3 bg-white text-zinc-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
-                    <input type="tel" placeholder="Ваш телефон" required class="w-full px-4 py-3 bg-white text-zinc-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
-                    <input type="email" placeholder="Ваш E-mail" required class="w-full px-4 py-3 bg-white text-zinc-800 rounded text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
-                    <button type="submit" class="w-full bg-brandRed hover:bg-brandRedHover text-white font-bold uppercase text-xs sm:text-sm py-4 rounded shadow-lg transition duration-200">
-                        ЗАКАЗАТЬ КОНСУЛЬТАЦИЮ
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 4: SLIDER SECTION -->
-    <section class="py-16 md:py-24 bg-white overflow-hidden">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-            <div class="relative flex items-center justify-center">
-                <!-- Left Arrow -->
-                <button onclick="prevSlide()" class="absolute left-0 z-10 w-10 h-10 sm:w-12 sm:h-12 text-brandRed text-2xl sm:text-3xl hover:scale-110 transition">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-
-                <!-- Slider Track -->
-                <div class="w-full max-w-lg mx-auto overflow-hidden px-8">
-                    <div id="sliderTrack" class="flex transition-transform duration-500 ease-out">
-                        <!-- Slide 1 -->
-                        <div class="w-full flex-shrink-0 flex flex-col items-center">
-                            <div class="w-64 h-64 sm:w-80 sm:h-80 bg-zinc-50 rounded-2xl flex items-center justify-center p-6 border border-zinc-100 shadow-inner">
-                                <img src="https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&w=600&q=80" alt="Polar RC3 GPS" class="max-h-full max-w-full object-contain rounded-lg">
-                            </div>
-                            <div class="mt-4 text-center">
-                                <h4 class="font-bold text-base">Polar RC3 GPS Black</h4>
-                                <p class="text-xs text-zinc-500">С датчиком сердечного ритма</p>
-                            </div>
+                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
+                            <i class="fa-solid fa-people-group"></i>
                         </div>
-
-                        <!-- Slide 2 -->
-                        <div class="w-full flex-shrink-0 flex flex-col items-center">
-                            <div class="w-64 h-64 sm:w-80 sm:h-80 bg-zinc-50 rounded-2xl flex items-center justify-center p-6 border border-zinc-100 shadow-inner">
-                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Polar RC3 GPS Side" class="max-h-full max-w-full object-contain rounded-lg">
-                            </div>
-                            <div class="mt-4 text-center">
-                                <h4 class="font-bold text-base">Polar RC3 GPS Red Edition</h4>
-                                <p class="text-xs text-zinc-500">Для профессионального бега</p>
-                            </div>
-                        </div>
-
-                        <!-- Slide 3 -->
-                        <div class="w-full flex-shrink-0 flex flex-col items-center">
-                            <div class="w-64 h-64 sm:w-80 sm:h-80 bg-zinc-50 rounded-2xl flex items-center justify-center p-6 border border-zinc-100 shadow-inner">
-                                <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=600&q=80" alt="Polar M2" class="max-h-full max-w-full object-contain rounded-lg">
-                            </div>
-                            <div class="mt-4 text-center">
-                                <h4 class="font-bold text-base">Suunto M2 Black</h4>
-                                <p class="text-xs text-zinc-500">Компактный пульсометр для фитнеса</p>
-                            </div>
-                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Индивидуальные залы</h3>
+                        <p class="text-xs text-gray-400">В зале находится только Ваша компания — никакой очереди на микрофон с посторонними!</p>
                     </div>
                 </div>
 
-                <!-- Right Arrow -->
-                <button onclick="nextSlide()" class="absolute right-0 z-10 w-10 h-10 sm:w-12 sm:h-12 text-brandRed text-2xl sm:text-3xl hover:scale-110 transition">
-                    <i class="fa-solid fa-chevron-right"></i>
+                <!-- Advantage 4 -->
+                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Без депозита</h3>
+                        <p class="text-xs text-gray-400">Мы не берем никакой обязательный депозит. Оплата происходит просто за человека в час.</p>
+                    </div>
+                </div>
+
+                <!-- Advantage 5 -->
+                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">В самом центре Москвы</h3>
+                        <p class="text-xs text-gray-400">Удобное расположение возле метро Лубянка. Легко добраться из любой точки города.</p>
+                    </div>
+                </div>
+
+                <!-- Advantage 6 (Adjusted per requirement: Drinks only) -->
+                <div class="bg-brandCard hover:bg-brandCardHover border border-brandBorder p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/10 border border-brandOrange/30 flex items-center justify-center text-brandOrange text-2xl mb-4">
+                            <i class="fa-solid fa-glass-water"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Нет пробкового сбора</h3>
+                        <p class="text-xs text-gray-400">Можно приносить с собой <strong class="text-brandOrange">еду и напитки без пробкового сбора</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Central CTA Button -->
+            <div class="text-center mt-12">
+                <button onclick="openBookingModal('Преимущества')" class="gradient-btn text-white text-sm font-bold uppercase tracking-wider px-8 py-4 rounded-xl">
+                    Забронировать зал
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 5: CATALOG SECTION -->
-    <section id="catalog" class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <h2 class="text-2xl sm:text-3xl font-black text-center uppercase tracking-tight mb-10">
-                КАТАЛОГ ПУЛЬСОМЕТРОВ
-            </h2>
-
-            <!-- Filter Tabs -->
-            <div class="flex justify-center mb-12">
-                <div class="inline-flex border-2 border-zinc-200 transform -skew-x-12 overflow-hidden text-xs sm:text-sm font-bold">
-                    <button onclick="switchTab('fitness')" id="tab-fitness" class="px-6 py-3 uppercase bg-brandRed text-white transition skew-x-12">
-                        ДЛЯ ФИТНЕСА
+    <!-- SECTION: HOW TO BOOK (Interactive Bot Slider) -->
+    <section id="how-to-book" class="py-20 bg-brandBg relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Как забронировать зал?</h2>
+                    <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2">Бронирование по шагам в чат-боте Telegram</p>
+                </div>
+                <!-- Navigation Arrows -->
+                <div class="flex items-center gap-3 mt-4 md:mt-0">
+                    <span id="stepCounter" class="text-sm font-bold text-gray-400 mr-2">Шаг 1 из 5</span>
+                    <button onclick="prevStep()" class="w-10 h-10 rounded-full bg-brandCard border border-brandBorder flex items-center justify-center text-white hover:text-brandOrange transition-colors">
+                        <i class="fa-solid fa-chevron-left"></i>
                     </button>
-                    <button onclick="switchTab('running')" id="tab-running" class="px-6 py-3 uppercase bg-white text-zinc-500 hover:bg-zinc-100 transition skew-x-12 border-x-2 border-zinc-200">
-                        ДЛЯ БЕГА
-                    </button>
-                    <button onclick="switchTab('triathlon')" id="tab-triathlon" class="px-6 py-3 uppercase bg-white text-zinc-500 hover:bg-zinc-100 transition skew-x-12">
-                        ДЛЯ ТРИАТЛОНА
+                    <button onclick="nextStep()" class="w-10 h-10 rounded-full bg-brandCard border border-brandBorder flex items-center justify-center text-white hover:text-brandOrange transition-colors">
+                        <i class="fa-solid fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Product Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Steps Cards Container -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="stepsContainer">
                 
-                <!-- Product Card 1 -->
-                <div class="bg-white border border-zinc-200 rounded p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition relative group min-h-[440px] perspective">
-                    <div id="card1" class="card-flip-inner relative w-full h-full flex flex-col justify-between">
+                <!-- Step 1 -->
+                <div class="step-card bg-brandCard border-2 border-brandOrange rounded-2xl p-4 transition-all duration-300 relative overflow-hidden" data-step="1">
+                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brandOrange text-white font-bold text-xs flex items-center justify-center">1</div>
+                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-between border border-brandBorder">
+                        <div class="space-y-2 text-[10px]">
+                            <div class="bg-gray-800 text-gray-300 p-2 rounded-lg max-w-[80%]">Добро пожаловать в XARIZMA Bot!</div>
+                            <div class="bg-brandOrange/20 text-brandOrange border border-brandOrange/40 p-2 rounded-lg ml-auto max-w-[80%] font-semibold">/start</div>
+                        </div>
+                        <a href="https://t.me/fh_harizma_bot" target="_blank" class="w-full bg-sky-500 hover:bg-sky-600 text-white text-[11px] font-bold py-2 rounded-lg text-center transition-colors">
+                            <i class="fa-brands fa-telegram mr-1"></i> Открыть бот
+                        </a>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-center">Перейти в чат-бот</h4>
+                    <p class="text-[11px] text-gray-400 text-center mt-1">@fh_harizma_bot</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="2">
+                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">2</div>
+                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center gap-2 border border-brandBorder">
+                        <div class="bg-gray-800 text-gray-200 text-[10px] p-2 rounded-lg text-center">Выберите количество человек</div>
+                        <div class="space-y-1">
+                            <div class="bg-brandCard p-1.5 rounded text-[10px] text-center text-gray-300 border border-brandBorder">1 - 2 человека</div>
+                            <div class="bg-brandOrange/20 p-1.5 rounded text-[10px] text-center text-brandOrange font-bold border border-brandOrange">4 - 6 человек</div>
+                            <div class="bg-brandCard p-1.5 rounded text-[10px] text-center text-gray-300 border border-brandBorder">7 - 10 человек</div>
+                        </div>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-center">Количество человек</h4>
+                    <p class="text-[11px] text-gray-400 text-center mt-1">Укажите размер компании</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="3">
+                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">3</div>
+                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center gap-2 border border-brandBorder">
+                        <div class="bg-gray-800 text-gray-200 text-[10px] p-2 rounded-lg text-center">Время посещения</div>
+                        <div class="bg-brandOrange/20 border border-brandOrange p-2 rounded text-center">
+                            <span class="text-xs font-bold text-brandOrange block">2 ЧАСА</span>
+                            <span class="text-[9px] text-gray-400">Цена: от 2 000 ₽</span>
+                        </div>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-center">Время посещения</h4>
+                    <p class="text-[11px] text-gray-400 text-center mt-1">Выберите часы аренды</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="4">
+                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">4</div>
+                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center border border-brandBorder">
+                        <div class="grid grid-cols-2 gap-1 text-[9px] text-center">
+                            <div class="bg-brandCard p-2 rounded border border-brandBorder text-gray-300">Сегодня</div>
+                            <div class="bg-brandOrange/20 p-2 rounded border border-brandOrange font-bold text-brandOrange">Завтра</div>
+                            <div class="bg-brandCard p-2 rounded border border-brandBorder text-gray-300">Пятница</div>
+                            <div class="bg-brandCard p-2 rounded border border-brandBorder text-gray-300">Суббота</div>
+                        </div>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-center">Выбрать дату</h4>
+                    <p class="text-[11px] text-gray-400 text-center mt-1">Календарь брони</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step-card bg-brandCard border border-brandBorder rounded-2xl p-4 transition-all duration-300 relative overflow-hidden opacity-60 hover:opacity-100" data-step="5">
+                    <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-700 text-gray-300 font-bold text-xs flex items-center justify-center">5</div>
+                    <div class="bg-[#121316] rounded-xl p-3 mb-4 h-64 flex flex-col justify-center items-center text-center border border-brandBorder">
+                        <i class="fa-solid fa-circle-check text-green-500 text-3xl mb-2"></i>
+                        <span class="text-xs font-bold text-white">Бронь подтверждена!</span>
+                        <span class="text-[10px] text-gray-400 mt-1">Ждём вас в XARIZMA</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white text-center">Время старта</h4>
+                    <p class="text-[11px] text-gray-400 text-center mt-1">Завершение бронирования</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: FAQ ACCORDION -->
+    <section id="faq" class="py-20 bg-[#16181e] relative border-t border-brandBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <div class="lg:col-span-7">
+                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Вопросы и ответы</h2>
+                    <p class="text-brandOrange text-sm font-bold uppercase tracking-widest mt-2 mb-8">Мы подготовили ответы на часто задаваемые вопросы</p>
+
+                    <!-- Accordion List -->
+                    <div class="space-y-3" id="faqAccordion">
                         
-                        <!-- Front Face -->
-                        <div class="card-front w-full h-full flex flex-col justify-between">
-                            <div class="text-center">
-                                <div class="h-40 flex items-center justify-center mb-4">
-                                    <img src="https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&w=300&q=80" alt="Polar FT1" class="max-h-full object-contain">
-                                </div>
-                                <h3 class="font-bold text-sm text-zinc-800">Пульсометр Polar FT1</h3>
-                                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">
-                                    Для первых шагов в тренировках, основанных на сердечном ритме
-                                </p>
-                            </div>
-                            <div class="text-center my-4">
-                                <button onclick="toggleCard('card1')" class="text-brandRed text-xs font-bold underline hover:text-brandRedHover">
-                                    ПОДРОБНЕЕ
-                                </button>
-                            </div>
-                            <div class="pt-4 border-t border-zinc-100 flex items-center justify-between">
-                                <div>
-                                    <span class="block text-xs text-zinc-400 line-through">4 750 руб.</span>
-                                    <span class="text-base font-extrabold text-zinc-800">4 500 руб.</span>
-                                </div>
-                                <button onclick="openModal('Купить Polar FT1')" class="bg-brandRed hover:bg-brandRedHover text-white text-xs font-bold uppercase px-5 py-2.5 rounded shadow">
-                                    КУПИТЬ
-                                </button>
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Какое у вас караоке?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                Более 50,000 студийных фонограмм. Из них 80% - оригинальные минусовки в качестве PRO (mp3 - WAV). Ежемесячное обновление репертуара. Более 10,000 специальных фонограмм в сопровождении оригинальных видеоклипов.
                             </div>
                         </div>
 
-                        <!-- Back Face -->
-                        <div class="card-back absolute inset-0 bg-white flex flex-col justify-between p-2 text-xs text-zinc-600">
-                            <ul class="space-y-2 list-disc list-inside leading-relaxed text-[11px]">
-                                <li>Вы услышите звуковое оповещение о нужном пульсе во время тренировки;</li>
-                                <li>Вы увидите информативный графический индикатор целевых тренировочных зон пульса;</li>
-                                <li>Также Вы увидите информацию о расходе калорий за тренировку;</li>
-                                <li>Вы сможете посмотреть данные по 10 тренировкам.</li>
-                            </ul>
-                            <div class="text-center pt-4">
-                                <button onclick="toggleCard('card1')" class="text-brandRed text-xs font-bold underline hover:text-brandRedHover uppercase">
-                                    НАЗАД
-                                </button>
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Есть ли у вас английские песни?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                Да, в нашей каталожной базе представлена огромная коллекция зарубежных композиций на английском, испанском, французском и других языках.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Можно ли подключить телефон?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                Конечно! Вы можете легко подключить свой смартфон через Bluetooth или AUX/HDMI для трансляции собственного медиа-контента или плейлистов.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Сколько микрофонов в каждом зале?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                В каждом зале установлено по 2 беспроводных профессиональных микрофона с хорошей шумоизоляцией и обработкой голоса.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Есть ли оплата картой?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                Да, мы принимаем к оплате наличные, банковские карты через терминал, а также переводы по QR-коду / СБП.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 6 (Adjusted Drinks Text) -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Можно приносить с собой напитки и еду?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                Да! Вы можете принести с собой любые свои любимые напитки и продукты питания без каких-либо дополнительных сборов и ограничений.
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 7 -->
+                        <div class="bg-brandCard border border-brandBorder rounded-xl overflow-hidden">
+                            <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-bold text-white text-sm sm:text-base hover:text-brandOrange transition-colors">
+                                <span>Как рассчитывается стоимость?</span>
+                                <i class="fa-solid fa-chevron-down text-brandOrange text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-answer hidden px-5 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-brandBorder/40 pt-3">
+                                Оплата рассчитывается строго почасово за количество гостей в зале без дополнительных депозитов и обязательного заказа по меню.
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- Product Card 2 -->
-                <div class="bg-white border border-zinc-200 rounded p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition relative group min-h-[440px] perspective">
-                    <div id="card2" class="card-flip-inner relative w-full h-full flex flex-col justify-between">
-                        
-                        <div class="card-front w-full h-full flex flex-col justify-between">
-                            <div class="text-center">
-                                <div class="h-40 flex items-center justify-center mb-4">
-                                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80" alt="Suunto M2" class="max-h-full object-contain">
-                                </div>
-                                <h3 class="font-bold text-sm text-zinc-800">Пульсометр Suunto M2</h3>
-                                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">
-                                    Для первых шагов в тренировках, основанных на сердечном ритме
-                                </p>
-                            </div>
-                            <div class="text-center my-4">
-                                <button onclick="toggleCard('card2')" class="text-brandRed text-xs font-bold underline hover:text-brandRedHover">
-                                    ПОДРОБНЕЕ
-                                </button>
-                            </div>
-                            <div class="pt-4 border-t border-zinc-100 flex items-center justify-between">
-                                <div>
-                                    <span class="block text-xs text-zinc-400 line-through">6 690 руб.</span>
-                                    <span class="text-base font-extrabold text-zinc-800">6 641 руб.</span>
-                                </div>
-                                <button onclick="openModal('Купить Suunto M2')" class="bg-brandRed hover:bg-brandRedHover text-white text-xs font-bold uppercase px-5 py-2.5 rounded shadow">
-                                    КУПИТЬ
-                                </button>
-                            </div>
+                <!-- Right Feature Banner -->
+                <div class="lg:col-span-5 bg-gradient-to-br from-brandCard to-brandBg border border-brandBorder rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brandOrange/20 border border-brandOrange flex items-center justify-center text-brandOrange text-2xl">
+                            <i class="fa-solid fa-gem"></i>
                         </div>
-
-                        <div class="card-back absolute inset-0 bg-white flex flex-col justify-between p-2 text-xs text-zinc-600">
-                            <ul class="space-y-2 list-disc list-inside leading-relaxed text-[11px]">
-                                <li>Вы услышите звуковое оповещение о нужном пульсе во время тренировки;</li>
-                                <li>Вы увидите информативный графический индикатор целевых тренировочных зон пульса;</li>
-                                <li>Автоматическое определение пульсовых зон.</li>
-                            </ul>
-                            <div class="text-center pt-4">
-                                <button onclick="toggleCard('card2')" class="text-brandRed text-xs font-bold underline hover:text-brandRedHover uppercase">
-                                    НАЗАД
-                                </button>
-                            </div>
-                        </div>
-
+                        <h3 class="text-2xl font-black text-white leading-tight">В нашем заведении премиальный комфорт</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Бельгийский ковролин. На входе выдают <strong class="text-brandOrange">индивидуально запакованные тапочки</strong>, в которые необходимо переобуться для поддержания идеальной чистоты.
+                        </p>
                     </div>
-                </div>
 
-                <!-- Product Card 3 -->
-                <div class="bg-white border border-zinc-200 rounded p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition relative group min-h-[440px] perspective">
-                    <div id="card3" class="card-flip-inner relative w-full h-full flex flex-col justify-between">
-                        
-                        <div class="card-front w-full h-full flex flex-col justify-between">
-                            <div class="text-center">
-                                <div class="h-40 flex items-center justify-center mb-4">
-                                    <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=300&q=80" alt="Polar FT4" class="max-h-full object-contain">
-                                </div>
-                                <h3 class="font-bold text-sm text-zinc-800">Пульсометр Polar FT4</h3>
-                                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">
-                                    Улучшенная модель с отображением расхода калорий
-                                </p>
-                            </div>
-                            <div class="text-center my-4">
-                                <button onclick="toggleCard('card3')" class="text-brandRed text-xs font-bold underline hover:text-brandRedHover">
-                                    ПОДРОБНЕЕ
-                                </button>
-                            </div>
-                            <div class="pt-4 border-t border-zinc-100 flex items-center justify-between">
-                                <div>
-                                    <span class="block text-xs text-zinc-400 line-through">7 390 руб.</span>
-                                    <span class="text-base font-extrabold text-zinc-800">7 021 руб.</span>
-                                </div>
-                                <button onclick="openModal('Купить Polar FT4')" class="bg-brandRed hover:bg-brandRedHover text-white text-xs font-bold uppercase px-5 py-2.5 rounded shadow">
-                                    КУПИТЬ
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="card-back absolute inset-0 bg-white flex flex-col justify-between p-2 text-xs text-zinc-600">
-                            <ul class="space-y-2 list-disc list-inside leading-relaxed text-[11px]">
-                                <li>Улучшенный датчик сердечного ритма;</li>
-                                <li>Удобный мягкий текстильный ремешок;</li>
-                                <li>Память на 50 тренировок.</li>
-                            </ul>
-                            <div class="text-center pt-4">
-                                <button onclick="toggleCard('card3')" class="text-brandRed text-xs font-bold underline hover:text-brandRedHover uppercase">
-                                    НАЗАД
-                                </button>
-                            </div>
-                        </div>
-
+                    <div class="mt-8 pt-6 border-t border-brandBorder">
+                        <button onclick="openBookingModal('Раздел FAQ')" class="w-full gradient-btn text-white text-sm font-bold uppercase tracking-wider py-4 rounded-xl text-center">
+                            Забронировать зал
+                        </button>
                     </div>
                 </div>
 
@@ -415,175 +637,311 @@
         </div>
     </section>
 
-    <!-- SECTION 6: REVIEWS SECTION -->
-    <section class="py-16 md:py-24 bg-white border-t border-zinc-100">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-            <h2 class="text-2xl sm:text-3xl font-black text-center uppercase tracking-tight mb-16">
-                ОТЗЫВЫ КЛИЕНТОВ
-            </h2>
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-brandBorder text-gray-400 text-xs py-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 items-center">
+                
+                <!-- Logo -->
+                <div>
+                    <span class="text-3xl font-black tracking-widest text-white">
+                        XARI<span class="text-brandOrange">Z</span>MA
+                    </span>
+                    <p class="text-[11px] text-gray-500 mt-2">Аренда изолированных караоке-залов в самом центре Москвы.</p>
+                </div>
 
-            <div class="space-y-12">
-                <!-- Review 1 -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-8">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Ирина Иванченко" class="w-32 h-32 rounded-full object-cover flex-shrink-0 shadow">
+                <!-- Phone -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-base text-zinc-800">Ирина Иванченко</h3>
-                        <div class="text-xs text-zinc-400 font-medium mb-3">2 полумарафона</div>
-                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed space-y-2">
-                            <span>Не знала, что себе купить - обратилась к ребятам из RunSmart - подобрали пульсометр, который подошёл именно под мои цели и финансовые возможности. Через некоторое время решила обновить гаджет - не раздумывая обратилась туда же.</span><br><br>
-                            <span>Новые цели - новый гаджет!</span><br>
-                            <strong class="font-semibold text-zinc-800">Спасибо, RunSmart!</strong>
-                        </p>
+                        <span class="text-[10px] text-gray-500 uppercase block">Телефон для брони</span>
+                        <a href="tel:+79979709090" class="text-white font-bold hover:text-brandOrange transition-colors">+7 (997) 970-90-90</a>
                     </div>
                 </div>
 
-                <!-- Review 2 -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-8">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Иван Сёмочкин" class="w-32 h-32 rounded-full object-cover flex-shrink-0 shadow">
+                <!-- Hours -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brandCard flex items-center justify-center text-brandOrange border border-brandBorder">
+                        <i class="fa-regular fa-calendar-check"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-base text-zinc-800">Иван Сёмочкин</h3>
-                        <div class="text-xs text-zinc-400 font-medium mb-3">1 полумарафон</div>
-                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed space-y-2">
-                            <span>Крутая штука-пульсометр. Обычно без них бегал. Оказывается только хуже себе делал. Купил пульсометр, ещё в подарок получил тренировку. Со мной вместе провели первую тренировку, научили пользоваться новым гаджетом. Также объяснили основы анатомии, составили план тренировок на месяц вперёд.</span><br><br>
-                            <strong class="font-semibold text-zinc-800">С ними подготовился к своему первому полумарафону! Спасибо!!</strong>
-                        </p>
+                        <span class="text-[10px] text-gray-500 uppercase block">Режим работы</span>
+                        <span class="text-white font-bold">Пн — Вс круглосуточно</span>
                     </div>
                 </div>
 
-                <!-- Review 3 -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-8">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" alt="Юлия Дашкина" class="w-32 h-32 rounded-full object-cover flex-shrink-0 shadow">
-                    <div>
-                        <h3 class="font-bold text-base text-zinc-800">Юлия Дашкина</h3>
-                        <div class="text-xs text-zinc-400 font-medium mb-3">2 полумарафона</div>
-                        <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed space-y-2">
-                            <span>Долго не могла начать бегать, т.к. до этого несколько раз начинала, но становилось тяжело и я бросала. От друзей услышала о RunSmart и о беге с контролем пульса и решила попробовать.</span><br><br>
-                            <span>Позвонила, ребята поинтересовались моими целями и подобрали очень интересный вариант со скидкой! Теперь бегаю и наслаждаюсь бегом! Пробежала уже 2 полумарафона и несколько более коротких забегов и не намерена останавливаться!</span><br><br>
-                            <strong class="font-semibold text-zinc-800">Спасибо!!</strong>
-                        </p>
+                <!-- Location & Route -->
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-location-dot text-brandOrange"></i>
+                        <span>м. Лубянка, ул. Сретенский переулок, 4</span>
                     </div>
+                    <a href="https://yandex.ru/maps" target="_blank" class="bg-brandCard hover:bg-brandCardHover border border-brandBorder text-gray-200 font-semibold px-4 py-2.5 rounded-xl text-center transition-colors text-xs flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-route text-brandOrange"></i> Построить маршрут
+                    </a>
                 </div>
+
+            </div>
+
+            <div class="border-t border-brandBorder/50 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-gray-500">
+                <span>© XARIZMA Karaoke Club. Все права защищены.</span>
+                <span>Напитки и еда без пробкового сбора</span>
             </div>
         </div>
-    </section>
 
-    <!-- SECTION 7: FOOTER & MAP SECTION -->
-    <section class="relative h-96 w-full bg-zinc-200">
-        <!-- Interactive Map Background Simulation -->
-        <iframe title="Map Location" class="w-full h-full border-0 grayscale opacity-80" 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.602701416972!2d37.64831631593106!3d55.76547898055627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a6401018ad5%3A0x29dd2b6dfd590400!2sMyasnitskiy%20Proyezd%2C%203%D1%811%2C%20Moskva%2C%20Russia%2C%20107078!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s" 
-                allowfullscreen="" loading="lazy"></iframe>
+        <!-- Scroll To Top Floating Button -->
+        <button onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-brandCard/80 backdrop-blur border border-brandBorder text-white hover:text-brandOrange flex items-center justify-center shadow-xl transition-colors z-30">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </footer>
 
-        <!-- Red Address Card Overlay -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:left-auto md:right-20 bg-brandRed text-white p-8 rounded shadow-2xl text-center max-w-sm w-full z-10">
-            <address class="not-italic text-xs sm:text-sm font-semibold mb-3 leading-relaxed">
-                Москва, Мясницкий проезд, д.3с1
-            </address>
-            <a href="tel:84999228974" class="block text-lg font-black mb-6 hover:underline">8 (499) 922-89-74</a>
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-brandCard border border-brandBorder rounded-2xl w-full max-w-md p-6 sm:p-8 relative shadow-2xl">
+            <!-- Close Button -->
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
 
-            <!-- Social Links -->
-            <div class="flex justify-center space-x-4">
-                <a href="#" class="w-10 h-10 border border-white/40 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-brandRed transition">
-                    <i class="fa-brands fa-facebook-f text-sm"></i>
-                </a>
-                <a href="#" class="w-10 h-10 border border-white/40 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-brandRed transition">
-                    <i class="fa-brands fa-instagram text-sm"></i>
-                </a>
-                <a href="#" class="w-10 h-10 border border-white/40 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-brandRed transition">
-                    <i class="fa-brands fa-pinterest-p text-sm"></i>
-                </a>
+            <div class="mb-6">
+                <h3 class="text-2xl font-black text-white uppercase" id="modalTargetTitle">Забронировать зал</h3>
+                <p class="text-xs text-brandOrange font-semibold mt-1">Оставьте заявку, и мы свяжемся с вами в течение 5 минут</p>
             </div>
-        </div>
-    </section>
 
-    <!-- Modal -->
-    <div id="actionModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded max-w-sm w-full p-6 relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600 text-xl font-bold">&times;</button>
-            <div class="text-center mb-4">
-                <h3 id="modalTitle" class="text-base font-bold text-zinc-800 uppercase">Заказать консультацию</h3>
-                <p class="text-xs text-zinc-500 mt-1">Оставьте свои данные и мы перезвоним вам</p>
-            </div>
-            <form onsubmit="handleFormSubmit(event)" class="space-y-3">
-                <input type="text" placeholder="Ваше имя" required class="w-full px-3 py-2 border border-zinc-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-brandRed">
-                <input type="tel" placeholder="Ваш телефон" required class="w-full px-3 py-2 border border-zinc-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-brandRed">
-                <input type="email" placeholder="Ваш E-mail" class="w-full px-3 py-2 border border-zinc-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-brandRed">
-                <button type="submit" class="w-full bg-brandRed hover:bg-brandRedHover text-white font-bold text-xs uppercase py-3 rounded transition">
-                    ОТПРАВИТЬ
+            <form id="modalForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ваше имя</label>
+                    <input type="text" required placeholder="Александр" class="w-full bg-[#121316] border border-brandBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Телефон</label>
+                    <input type="tel" required placeholder="+7 (999) 000-00-00" class="w-full bg-[#121316] border border-brandBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Дата</label>
+                        <input type="date" required class="w-full bg-[#121316] border border-brandBorder rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Гостей</label>
+                        <select class="w-full bg-[#121316] border border-brandBorder rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                            <option>1 - 2 человека</option>
+                            <option>3 - 5 человек</option>
+                            <option>6 - 10 человек</option>
+                            <option>Более 10 человек</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Желаемый зал</label>
+                    <select id="modalRoomSelect" class="w-full bg-[#121316] border border-brandBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brandOrange">
+                        <option>HALL №1 (до 20 чел)</option>
+                        <option>HALL №2 (до 10 чел)</option>
+                        <option>HALL №3 (до 8 чел)</option>
+                        <option>HALL №5 (до 15 чел)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full gradient-btn text-white font-bold uppercase tracking-wider py-4 rounded-xl text-sm mt-2">
+                    Отправить заявку
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded max-w-xs w-full p-6 text-center shadow-2xl">
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+    <!-- SUCCESS MESSAGE DIALOG -->
+    <div id="successModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-brandCard border border-brandBorder rounded-2xl w-full max-w-sm p-6 text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-green-500/20 text-green-500 border border-green-500 flex items-center justify-center mx-auto text-3xl">
                 <i class="fa-solid fa-check"></i>
             </div>
-            <h3 class="text-base font-bold text-zinc-800 mb-1">Спасибо за заявку!</h3>
-            <p class="text-xs text-zinc-500 mb-4">Наш менеджер свяжется с вами в течение 10 минут.</p>
-            <button onclick="closeSuccessModal()" class="bg-brandRed text-white text-xs font-bold uppercase px-6 py-2 rounded">ОК</button>
+            <h3 class="text-xl font-bold text-white uppercase">Заявка принята!</h3>
+            <p class="text-xs text-gray-300">Наш администратор перезвонит вам в ближайшее время для подтверждения брони.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-brandOrange text-white font-bold py-3 rounded-xl text-sm uppercase">
+                Понятно
+            </button>
         </div>
     </div>
 
     <script>
-        // Slider Control Logic
-        let currentSlide = 0;
-        const sliderTrack = document.getElementById('sliderTrack');
-        const totalSlides = 3;
+        /* Room switching data */
+        const roomsData = {
+            1: {
+                title: "HALL №1",
+                area: "40 м²",
+                capacity: "до 20-ти человек",
+                desc: "Просторный зал с яркой неоновой подсветкой, большим экраном и мощной акустической системой. Идеален для празднования дней рождения и корпоративов.",
+                images: [
+                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop"
+                ]
+            },
+            2: {
+                title: "HALL №2",
+                area: "25 м²",
+                capacity: "до 10-ти человек",
+                desc: "Уютная комната для небольших компаний. Удобные мягкие диваны, клубное освещение и профессиональная система караоке AST-50.",
+                images: [
+                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop"
+                ]
+            },
+            3: {
+                title: "HALL №3",
+                area: "20 м²",
+                capacity: "до 8-ми человек",
+                desc: "Камерный стильный зал для романтических встреч или отдыха с самыми близкими друзьями.",
+                images: [
+                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop"
+                ]
+            },
+            5: {
+                title: "HALL №5",
+                area: "32 м²",
+                capacity: "до 15-ти человек",
+                desc: "Современный зал с панорамной системой звука и проектором высокого разрешения.",
+                images: [
+                    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop"
+                ]
+            }
+        };
 
-        function updateSlider() {
-            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
+        function switchRoom(hallNum) {
+            const data = roomsData[hallNum];
+            if (!data) return;
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateSlider();
-        }
+            // Update text
+            document.getElementById('roomTitle').innerText = data.title;
+            document.getElementById('roomArea').innerText = data.area;
+            document.getElementById('roomCapacity').innerText = data.capacity;
+            document.getElementById('roomDesc').innerText = data.desc;
+            document.getElementById('roomBookBtn').setAttribute('onclick', `openBookingModal('${data.title}')`);
 
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateSlider();
-        }
-
-        // Tab Switching Logic
-        function switchTab(tabName) {
-            const tabs = ['fitness', 'running', 'triathlon'];
-            tabs.forEach(tab => {
-                const btn = document.getElementById(`tab-${tab}`);
-                if(tab === tabName) {
-                    btn.className = "px-6 py-3 uppercase bg-brandRed text-white transition skew-x-12";
+            // Update tab styles
+            document.querySelectorAll('.room-tab').forEach(btn => {
+                if (btn.getAttribute('data-hall') == hallNum) {
+                    btn.className = "room-tab border border-brandOrange bg-brandOrange text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all";
                 } else {
-                    btn.className = "px-6 py-3 uppercase bg-white text-zinc-500 hover:bg-zinc-100 transition skew-x-12 border-x-2 border-zinc-200";
+                    btn.className = "room-tab border border-brandBorder bg-brandCard text-gray-400 hover:text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all";
                 }
+            });
+
+            // Update Gallery
+            document.getElementById('mainRoomImg').src = data.images[0];
+            const thumbContainer = document.getElementById('galleryThumbnails');
+            thumbContainer.innerHTML = '';
+
+            data.images.forEach((imgUrl, index) => {
+                const btn = document.createElement('button');
+                btn.onclick = function() { setMainImage(this); };
+                btn.className = index === 0 
+                    ? "rounded-xl overflow-hidden border-2 border-brandOrange opacity-100 transition-all h-20"
+                    : "rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20";
+                btn.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
+                thumbContainer.appendChild(btn);
             });
         }
 
-        // Card Flip Toggle
-        function toggleCard(cardId) {
-            const card = document.getElementById(cardId);
-            card.parentElement.classList.toggle('card-flipped');
+        function setMainImage(btnElem) {
+            const imgSrc = btnElem.querySelector('img').src;
+            document.getElementById('mainRoomImg').src = imgSrc;
+            
+            document.querySelectorAll('#galleryThumbnails button').forEach(b => {
+                b.className = "rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all h-20";
+            });
+            btnElem.className = "rounded-xl overflow-hidden border-2 border-brandOrange opacity-100 transition-all h-20";
         }
 
-        // Modal Logic
-        function openModal(title) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('actionModal').classList.remove('hidden');
+        /* FAQ Accordion Toggle */
+        function toggleFaq(btn) {
+            const answer = btn.nextElementSibling;
+            const icon = btn.querySelector('i');
+            const isHidden = answer.classList.contains('hidden');
+
+            document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.add('hidden'));
+            document.querySelectorAll('#faqAccordion i').forEach(ic => ic.style.transform = 'rotate(0deg)');
+
+            if (isHidden) {
+                answer.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            }
         }
 
-        function closeModal() {
-            document.getElementById('actionModal').classList.add('hidden');
+        /* Step Slider Control */
+        let currentStep = 1;
+        function updateSteps() {
+            const cards = document.querySelectorAll('.step-card');
+            cards.forEach((card, idx) => {
+                const stepNum = idx + 1;
+                if (stepNum === currentStep) {
+                    card.classList.remove('opacity-60', 'border-brandBorder');
+                    card.classList.add('opacity-100', 'border-brandOrange', 'border-2');
+                } else {
+                    card.classList.remove('opacity-100', 'border-brandOrange', 'border-2');
+                    card.classList.add('opacity-60', 'border-brandBorder', 'border');
+                }
+            });
+            document.getElementById('stepCounter').innerText = `Шаг ${currentStep} из 5`;
+        }
+
+        function nextStep() {
+            if (currentStep < 5) {
+                currentStep++;
+                updateSteps();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateSteps();
+            }
+        }
+
+        /* Mobile Menu */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* Booking Modal */
+        function openBookingModal(sourceTitle) {
+            document.getElementById('modalTargetTitle').innerText = `Забронировать: ${sourceTitle}`;
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
         }
 
         function handleFormSubmit(e) {
             e.preventDefault();
-            closeModal();
+            closeBookingModal();
             document.getElementById('successModal').classList.remove('hidden');
         }
 
         function closeSuccessModal() {
             document.getElementById('successModal').classList.add('hidden');
+        }
+
+        /* Scroll to top */
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
